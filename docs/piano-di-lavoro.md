@@ -12,12 +12,12 @@ Consegna: **martedì 6 ottobre 2026, ore 23:59:59**. Il piano prevede 3 giorni d
 
 ## Calendario
 
-| Giorno | Fasi | A fine giornata deve funzionare |
-| --- | --- | --- |
-| 1 | 0, 1, 2, 3 | Tutto il backend, testato, con dati demo |
-| 2 | 4, 5, 6, 7 | API documentata e collection Postman; frontend completo tranne chat e profilo |
-| 3 | 8, 9 | Chat AI, profilo, README e clone pulita funzionante |
-| 4-5 | margine | Prove complete, correzioni, screenshot, consegna |
+| Giorno | Fasi       | A fine giornata deve funzionare                                               |
+| ------ | ---------- | ----------------------------------------------------------------------------- |
+| 1      | 0, 1, 2, 3 | Tutto il backend, testato, con dati demo                                      |
+| 2      | 4, 5, 6, 7 | API documentata e collection Postman; frontend completo tranne chat e profilo |
+| 3      | 8, 9       | Chat AI, profilo, README e clone pulita funzionante                           |
+| 4-5    | margine    | Prove complete, correzioni, screenshot, consegna                              |
 
 ## Fasi
 
@@ -25,7 +25,7 @@ Consegna: **martedì 6 ottobre 2026, ore 23:59:59**. Il piano prevede 3 giorni d
 
 - **Leggi**: "Panoramica", "Docker & deployment" (struttura, servizi, dettagli, variabili).
 - **Fai**:
-  - Un solo repository Git nella radice, con `.gitignore`, `.gitattributes` (a capo LF per script e configurazioni) e `.env.example`.
+  - Verifica che `.gitignore` e `.gitattributes` esistano e siano completi (a capo LF per script e configurazioni) e crea `.env.example`.
   - `backend/` con Laravel in modalità API (Sanctum, CORS, driver come da `backend/CLAUDE.md`).
   - `frontend/` con Vite, React e MUI (solo una pagina segnaposto).
   - Attenzione: `backend/` e `frontend/` contengono già un `CLAUDE.md`, quindi i generatori (`composer create-project`, `npm create vite`) non accettano la cartella. Genera ogni progetto in una cartella temporanea (fuori dal repository o in `_tmp/`), copia i file dentro `backend/` o `frontend/` senza sovrascrivere il `CLAUDE.md` e cancella la cartella temporanea.

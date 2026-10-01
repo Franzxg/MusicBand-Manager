@@ -20,3 +20,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.log
+
+# Cartella temporanea dei generatori (fase 0)
+_tmp/
