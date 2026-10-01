@@ -1,0 +1,13 @@
+# Gli a capo restano LF su tutti i sistemi (script shell e file di configurazione
+# con CRLF non funzionano dentro i container Docker)
+* text=auto eol=lf
+
+# File binari
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.woff binary
+*.woff2 binary

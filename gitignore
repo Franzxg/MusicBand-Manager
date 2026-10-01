@@ -1,0 +1,22 @@
+# Variabili d'ambiente e segreti (si versiona solo l'esempio)
+.env
+.env.*
+!.env.example
+
+# Dipendenze e build
+node_modules/
+vendor/
+dist/
+build/
+.vite/
+
+# Impostazioni locali di Claude Code
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Sistema, editor e log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
