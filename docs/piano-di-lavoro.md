@@ -123,6 +123,7 @@ Consegna: **martedì 6 ottobre 2026, ore 23:59:59**. Il piano prevede 3 giorni d
 - **Leggi**: "Frontend" (Profilo utente, Tema, lingue e font), "Docker & deployment" (Requisiti del README).
 - **Fai**:
   - Pagina Profilo (dati, password, eliminazione account).
+  - Band corrente nella Navbar (vedi "Decisioni di implementazione (fase 7)" nelle specifiche).
   - Revisione di stati vuoti, errori, traduzioni complete, contrasti e responsive (360, 768 e 1280 px).
   - README completo come da specifiche e dalle richieste del docente.
   - Poi `/consegna`.
