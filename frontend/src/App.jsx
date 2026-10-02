@@ -1,20 +1,48 @@
-import { Box, CssBaseline, Typography } from '@mui/material'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import AppLayout from './components/AppLayout'
+import { GuestRoute, ProtectedRoute } from './components/RouteGuards'
+import AuthProvider from './context/AuthProvider'
+import LanguageProvider from './context/LanguageProvider'
+import NotificationProvider from './context/NotificationProvider'
+import ThemeModeProvider from './context/ThemeModeProvider'
+import DashboardPage from './pages/DashboardPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import GuidePage from './pages/GuidePage'
+import LoginPage from './pages/LoginPage'
+import NotFoundPage from './pages/NotFoundPage'
+import ProfilePage from './pages/ProfilePage'
+import RegisterPage from './pages/RegisterPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 
-// Pagina segnaposto (fase 0): tema, i18n e route arrivano nella fase 5
-function App() {
+export default function App() {
   return (
-    <>
-      <CssBaseline />
-      <Box
-        component="main"
-        sx={{ minHeight: '100dvh', display: 'grid', placeItems: 'center', p: 2 }}
-      >
-        <Typography variant="h4" component="h1" align="center">
-          Music Band Manager
-        </Typography>
-      </Box>
-    </>
+    <ThemeModeProvider>
+      <LanguageProvider>
+        <NotificationProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route element={<GuestRoute />}>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                </Route>
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/guide" element={<GuidePage />} />
+
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<AppLayout />}>
+                    <Route path="/" element={<DashboardPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                  </Route>
+                </Route>
+
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </NotificationProvider>
+      </LanguageProvider>
+    </ThemeModeProvider>
   )
 }
-
-export default App
