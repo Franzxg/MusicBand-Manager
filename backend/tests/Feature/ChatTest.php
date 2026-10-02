@@ -26,7 +26,7 @@ class ChatTest extends TestCase
         parent::setUp();
 
         Http::preventStrayRequests();
-        config(['ai.fallback_enabled' => false, 'ai.openrouter.api_key' => 'test-key']);
+        config(['ai.fallback_enabled' => false, 'ai.openrouter.api_key' => 'test-key', 'ai.ollama.num_thread' => null]);
 
         $this->user = User::factory()->create(['name' => 'Anna', 'email' => 'anna@example.com']);
         $this->band = $this->bandWith($this->user, User::factory()->create(['name' => 'Bruno', 'email' => 'bruno@example.com']));
@@ -51,6 +51,7 @@ class ChatTest extends TestCase
         $first = $this->songFor($this->band, ['duration_seconds' => 200, 'musical_key' => 'Am']);
         $second = $this->songFor($this->band, ['duration_seconds' => 180]);
         $foreign = $this->songFor($this->bandWith(User::factory()->create()));
+        config(['ai.ollama.num_thread' => 4]);
 
         Http::fake(['*/api/chat' => Http::response($this->ollamaReply([
             'reply' => 'Ecco la scaletta',
@@ -74,6 +75,7 @@ class ChatTest extends TestCase
             return $request['stream'] === false
                 && $request['model'] === config('ai.ollama.model')
                 && $request['options']['temperature'] === 0.3
+                && $request['options']['num_thread'] === 4
                 && $enum === [$first->id, $second->id]
                 && $request['messages'][0]['role'] === 'system'
                 && $request['messages'][1]['content'] === 'Proponi una scaletta da 10 minuti';
@@ -94,7 +96,8 @@ class ChatTest extends TestCase
                 && str_contains($system, 'Bruno | Chitarra')
                 && str_contains($system, 'Wonderwall')
                 && str_contains($system, 'energy 4 | bpm 87')
-                && ! str_contains($system, '@');
+                && ! str_contains($system, '@')
+                && ! isset($request['options']['num_thread']);
         });
     }
 

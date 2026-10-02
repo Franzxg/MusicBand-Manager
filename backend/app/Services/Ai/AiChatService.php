@@ -20,6 +20,7 @@ Rules:
 - Fill "setlist_song_ids" only when the user asks for a setlist: song ids from the REPERTOIRE, in playing order, without repetitions. Otherwise use an empty array.
 - For a setlist, get as close as possible to the requested duration (sum the song durations). Follow the requested mood using energy and bpm: open with energy, lower it in the middle, close strong.
 - "setlist_notes" is a short note about the proposed setlist, or an empty string.
+- When you propose a setlist, "reply" is one or two sentences explaining the choice: do not list the songs, ids, durations or notes there, the app shows them with the real total duration.
 TXT;
 
     public function __construct(

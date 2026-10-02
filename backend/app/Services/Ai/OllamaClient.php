@@ -14,6 +14,8 @@ class OllamaClient implements LlmClient
 
         try {
             $response = Http::baseUrl($config['base_url'])
+                // Senza il servizio ollama si risponde 503 in pochi secondi
+                ->connectTimeout(5)
                 ->timeout($config['timeout'])
                 ->post('/api/chat', [
                     'model' => $config['model'],
@@ -21,10 +23,12 @@ class OllamaClient implements LlmClient
                     'stream' => false,
                     'format' => $schema,
                     'keep_alive' => $config['keep_alive'],
-                    'options' => [
+                    // num_thread solo se configurato (altrimenti decide Ollama)
+                    'options' => array_filter([
                         'num_ctx' => $config['num_ctx'],
+                        'num_thread' => $config['num_thread'],
                         'temperature' => $config['temperature'],
-                    ],
+                    ], fn ($value) => $value !== null),
                 ]);
         } catch (ConnectionException $e) {
             throw new LlmUnavailableException('Ollama unreachable: '.$e->getMessage(), previous: $e);

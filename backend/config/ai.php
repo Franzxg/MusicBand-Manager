@@ -6,6 +6,8 @@ return [
         'base_url' => env('OLLAMA_BASE_URL', 'http://ollama:11434'),
         'model' => env('OLLAMA_MODEL', 'llama3.2:3b'),
         'num_ctx' => (int) env('OLLAMA_NUM_CTX', 4096),
+        // Thread della CPU: sulle CPU ibride (core P ed E) il default di Ollama usa tutti i core ed è molto lento; null = automatico
+        'num_thread' => env('OLLAMA_NUM_THREAD') ? (int) env('OLLAMA_NUM_THREAD') : null,
         'keep_alive' => env('OLLAMA_KEEP_ALIVE', '30m'),
         'timeout' => (int) env('OLLAMA_TIMEOUT', 120),
         'temperature' => 0.3,
