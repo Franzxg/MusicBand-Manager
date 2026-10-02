@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // URL del frontend per i link nelle email (il primo valore di FRONTEND_URL)
+    'frontend_url' => rtrim(trim(explode(',', env('FRONTEND_URL', 'http://localhost:3000'))[0]), '/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -78,7 +81,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'it'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
