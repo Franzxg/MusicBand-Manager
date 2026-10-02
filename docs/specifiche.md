@@ -273,6 +273,65 @@ L'endpoint della chat con Ollama è definito nella sezione Integrazione AI.
 - Seeder con dati dimostrativi: due utenti (demo1@example.com e demo2@example.com, password password123); due band, la prima con entrambi gli utenti; circa 15 canzoni con stati, energie e bpm diversi; due live, uno con una scaletta di 6 brani; tre prove. Le date sono relative al giorno del seed, così il calendario non è mai vuoto.
 - Feature test PHPUnit su registrazione e login, ingresso in band con codice e gestione della scaletta.
 
+### Decisioni di implementazione (fasi 0-3)
+
+Scelte non coperte in dettaglio dalle sezioni precedenti, prese durante lo sviluppo. Valgono come il resto delle specifiche.
+
+**Formato delle risposte**
+
+- `register` (201) e `login` (200) restituiscono `{ "token": "...", "user": { id, name, email, created_at } }`. Le credenziali errate danno 422 con l'errore sul campo `email`.
+- Le altre risorse sono avvolte in `data`: oggetto singolo `{ "data": { ... } }`, elenco `{ "data": [ ... ] }`. Nessuna paginazione.
+- 204 senza contenuto per: `logout`, `PUT /me/password`, `DELETE /me`, eliminazione di band, canzone, live e prova, `DELETE /bands/{band}/members/{user}` e `DELETE /lives/{live}/songs/{song}`.
+- Errori di validazione 422 nel formato standard di Laravel `{ "message": "...", "errors": { "campo": ["..."] } }`, tradotti in base ad `Accept-Language` (anche il riepilogo "(e altri N errori)").
+- Date in uscita in UTC con il formato di Laravel, es. `2026-10-14T19:30:00.000000Z`.
+
+**Utenti e profilo**
+
+- La tabella `users` non ha `email_verified_at` né `remember_token` (l'API usa solo token Sanctum).
+- L'email viene salvata in minuscolo e senza spazi ai lati; nomi, titoli, artisti e luoghi vengono salvati senza spazi ai lati.
+- `PATCH /me` accetta anche un solo campo (`name` o `email`).
+- Nessun limite di tentativi su `login`, `forgot-password` e `reset-password` (le specifiche lo chiedono solo per `join` e chat).
+
+**Band e membri**
+
+- Le risposte delle band includono `members_count` e `my_instruments` (strumenti dell'utente autenticato); il dettaglio aggiunge `members` (`id`, `name`, `instruments`).
+- Creazione band e `join` rispondono 201 con il dettaglio della band; `POST /bands/{band}/invite-code` e `PUT /bands/{band}/me/instruments` restituiscono il dettaglio aggiornato.
+- Il codice di invito è accettato anche in minuscolo. Codice inesistente o utente già membro: 422 sul campo `invite_code`.
+- Gli strumenti restano nell'ordine in cui sono stati inseriti.
+- `DELETE /bands/{band}/members/{user}` su un utente che non è membro risponde 404.
+- L'elenco delle band è ordinato per nome.
+
+**Repertorio**
+
+- `version` assente o vuota diventa stringa vuota; `link` e `musical_key` vuoti diventano `null`.
+- Il controllo anti-duplicati (stessa band, titolo, artista e versione, maiuscole ignorate) dà 422 sul campo `title`, sia in creazione sia in modifica.
+- Il repertorio è ordinato per titolo e poi per artista.
+- Le note (canzoni, live, scaletta, prove) accettano al massimo 10.000 caratteri.
+
+**Live, scaletta e prove**
+
+- `starts_at` accetta ISO 8601 con fuso (es. `2030-06-01T21:30:00+02:00`) e viene convertito in UTC prima del salvataggio.
+- Il dettaglio del live include `band` (`id`, `name`) e `songs` in ordine, ciascuna con `position`. `progress_percent` è un intero arrotondato.
+- Elenchi di live e prove ordinati per `starts_at`; senza `from` partono da adesso.
+- `POST /lives/{live}/songs` risponde 201 con il dettaglio del live; riordino, sostituzione e copia rispondono 200 con il dettaglio.
+- Brano già in scaletta: 422 su `song_id` (brano del repertorio) o su `title` (brano nuovo). Brano di un'altra band: 422 su `song_id` o `song_ids`.
+- `PUT .../songs/order` deve contenere tutti e soli i brani della scaletta, altrimenti 422 su `song_ids`. `PUT .../setlist` accetta anche un elenco vuoto (svuota la scaletta).
+- Dopo la rimozione di un brano le `position` non vengono rinumerate (l'ordine resta corretto); un brano non presente in scaletta dà 404.
+- `copy-setlist` dallo stesso live o da un live di un'altra band: 422 su `source_live_id`.
+
+**Calendario**
+
+- `from` e `to` obbligatori (ISO 8601), `to` non precedente a `from`; gli estremi sono inclusi.
+- Ogni evento è `{ type: "live" | "rehearsal", id, band: { id, name }, starts_at, place }`, in ordine di data.
+
+**Ambiente e strumenti**
+
+- Laravel 13 con `config.platform.php = 8.3.0` in `composer.json`, così le dipendenze restano compatibili con l'immagine PHP 8.3.
+- Lingua predefinita del backend `it`, lingua di riserva `en`.
+- I test girano su SQLite in memoria: `phpunit.xml` forza le variabili (`<env force="true">` e `<server>`), così `php artisan test` non tocca il MySQL di sviluppo.
+- L'immagine del backend contiene un `backend/.env` vuoto solo per evitare i warning di phpdotenv; la configurazione arriva comunque da compose. L'entrypoint è `backend/docker/entrypoint.sh`.
+- Il frontend usa ESLint (il template Vite attuale proporrebbe oxlint).
+
 ### Collection Postman
 
 Per testare tutti gli endpoint senza il frontend, il repository include una collection Postman.
