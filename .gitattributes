@@ -2,6 +2,14 @@
 # con CRLF non funzionano dentro i container Docker)
 * text=auto eol=lf
 
+# Esplicito per i file usati nei container
+*.sh text eol=lf
+*.conf text eol=lf
+*.ini text eol=lf
+Dockerfile text eol=lf
+.env.example text eol=lf
+*.yml text eol=lf
+
 # File binari
 *.png binary
 *.jpg binary
@@ -11,3 +19,5 @@
 *.webp binary
 *.woff binary
 *.woff2 binary
+*.ttf binary
+*.pdf binary
