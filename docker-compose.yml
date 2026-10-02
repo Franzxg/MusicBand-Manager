@@ -47,6 +47,15 @@ services:
       MAIL_PORT: ${MAIL_PORT:-1025}
       MAIL_FROM_ADDRESS: noreply@musicband.local
       SEED_ON_START: ${SEED_ON_START:-true}
+      # Chat AI (nessun depends_on verso ollama: senza Ollama la chat risponde 503)
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:3b}
+      OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:-30m}
+      OLLAMA_TIMEOUT: ${OLLAMA_TIMEOUT:-120}
+      AI_FALLBACK_ENABLED: ${AI_FALLBACK_ENABLED:-false}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openrouter/free}
 
   nginx:
     image: nginx:alpine
@@ -73,5 +82,37 @@ services:
     ports:
       - "${FRONTEND_PORT:-3000}:80"
 
+  # Profilo "ai": avviati solo con COMPOSE_PROFILES=ai
+  ollama:
+    image: ollama/ollama
+    profiles: ["ai"]
+    restart: unless-stopped
+    ports:
+      # Solo in locale: l'API usa la rete Docker
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  ollama-pull:
+    image: ollama/ollama
+    profiles: ["ai"]
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:3b}
+    volumes:
+      - ./docker/ollama/pull.sh:/pull.sh:ro
+    entrypoint: ["sh", "/pull.sh"]
+
 volumes:
   db_data:
+  ollama_data:
