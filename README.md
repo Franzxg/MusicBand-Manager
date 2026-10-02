@@ -23,7 +23,16 @@ docker compose up --build
 Al primo avvio il backend esegue le migrazioni e, con `SEED_ON_START=true`, crea i dati dimostrativi.
 Account demo: `demo1@example.com` e `demo2@example.com`, password `password123`.
 Per ripristinarli: `docker compose exec backend php artisan migrate:fresh --seed`.
-Su un PC con poca RAM lascia `COMPOSE_PROFILES=` vuoto nel `.env` per non avviare Ollama.
+
+### Chat AI (Ollama)
+
+Con `COMPOSE_PROFILES=ai` (valore di `.env.example`) partono anche `ollama` e `ollama-pull`. Al primo avvio `ollama-pull` scarica il modello `llama3.2:3b` (circa 2 GB) e poi termina: l'app è subito utilizzabile e la chat funziona a download finito. Avanzamento: `docker compose logs -f ollama-pull`; modelli scaricati: `docker compose exec ollama ollama list`.
+
+Su CPU una risposta può richiedere decine di secondi. Se è troppo lenta, imposta `OLLAMA_MODEL=llama3.2:1b` nel `.env` e riavvia.
+
+Su un PC con poca RAM lascia `COMPOSE_PROFILES=` vuoto nel `.env` per non avviare Ollama: la chat risponde "AI non disponibile" e il resto dell'app funziona.
+
+Fallback facoltativo su OpenRouter (spento di default): nel `.env` imposta `AI_FALLBACK_ENABLED=true` e `OPENROUTER_API_KEY` con una chiave gratuita di <https://openrouter.ai>. La chiamata parte dal backend Laravel solo quando Ollama non risponde; la chiave non arriva mai al browser.
 
 ## API e Postman
 

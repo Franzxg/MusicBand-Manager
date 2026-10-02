@@ -437,7 +437,7 @@ Per testare tutti gli endpoint senza il frontend, il repository include una coll
 - Un secondo utente ("Registra secondo membro") entra nella band con il codice usando `token2`, così `join` è provato sia riuscito (201) sia rifiutato (422, utente già membro). Alla fine anche il suo account viene eliminato e la band, rimasta senza membri, sparisce.
 - Due band temporanee servono a provare l'eliminazione della band e l'uscita dell'ultimo membro senza toccare la band usata dalle cartelle successive.
 - Le richieste con errore atteso lo dichiarano nel nome, es. "Reset password (token finto: 422 atteso)": il token vero arriva solo via email (Mailpit).
-- Ogni richiesta invia anche `Accept-Language: it`. La richiesta della chat accetta 200, 503 o 404 finché l'endpoint non esiste (fase 8).
+- Ogni richiesta invia anche `Accept-Language: it`. La richiesta della chat accetta 200 o 503 (AI non disponibile); una seconda richiesta prova il 422 con l'ultimo messaggio dell'assistente.
 - Con `APP_DEBUG=true` le risposte 403, 404 e 500 contengono anche lo stack trace: il frontend usa solo lo status e, al massimo, `message`.
 
 ## Database
@@ -572,6 +572,7 @@ La chat AI di ogni band gira su Ollama in locale, con un modello piccolo adatto 
 | `OLLAMA_BASE_URL` | `http://ollama:11434` | Indirizzo di Ollama nella rete Docker |
 | `OLLAMA_MODEL` | `llama3.2:3b` | Modello usato dalla chat |
 | `OLLAMA_NUM_CTX` | `4096` | Finestra di contesto, tenuta bassa per limitare la RAM |
+| `OLLAMA_NUM_THREAD` | `4` | Thread della CPU usati dal modello (`options.num_thread`); vuoto = tutti i core, molto più lento sulle CPU con core P ed E |
 | `OLLAMA_KEEP_ALIVE` | `30m` | Tempo in cui il modello resta in memoria dopo l'ultima richiesta |
 | `OLLAMA_TIMEOUT` | `120` | Secondi di attesa massima per la risposta |
 | `AI_FALLBACK_ENABLED` | `false` | Se `true`, usa OpenRouter quando Ollama non risponde |
@@ -641,6 +642,16 @@ Il contesto è costruito a ogni richiesta dal database, in formato compatto (una
 - **Suggerimenti** cliccabili nella chat vuota, tradotti in italiano e inglese, ad esempio: "Proponi una scaletta da 45 minuti per il prossimo live", "Quali brani devo ancora studiare?", "Quali brani sono nella stessa tonalità?".
 - **Card della proposta** dentro il messaggio: brani in ordine (titolo, artista, tonalità, durata), durata totale, selettore del live di destinazione (default: il live indicato o il prossimo) e pulsanti "Salva come scaletta" e "Scarta". Se il live ha già una scaletta, una finestra di conferma chiede se sostituirla.
 - **Errori**: con un 503 compare un messaggio tradotto con il pulsante "Riprova"; il messaggio dell'utente resta nella chat.
+
+### Decisioni di implementazione (fase 8)
+
+- **Velocità**: su una CPU ibrida (Intel Core Ultra, core P ed E) Ollama con tutti i 16 thread generava circa 0,6 token al secondo e superava il timeout; con 4 thread circa 17 token al secondo (risposte in 3-20 secondi). Per questo `OLLAMA_NUM_THREAD=4` di default, passato come `options.num_thread`.
+- **Istruzioni** al modello in inglese (più affidabili su un modello piccolo), con risposta nella lingua dell'utente e lingua di default presa da `Accept-Language`. Con una proposta, `reply` contiene solo una o due frasi di spiegazione: brani, durata reale e note li mostra la card.
+- **Contesto**: le date di live e prove sono in UTC (indicato nell'intestazione); i live hanno anche l'id. Il repertorio passato al modello (massimo 100 brani, in ordine di titolo) è lo stesso usato per l'`enum` dello schema. Con repertorio vuoto lo schema usa `maxItems: 0`.
+- **Risposta non in JSON** (raro con gli structured outputs): si mostra il testo così com'è, senza proposta.
+- **Errori**: 503 per Ollama irraggiungibile (connessione entro 5 secondi), risposta di errore (es. 404 modello non scaricato) o timeout. OpenRouter usa lo stesso schema con `response_format` di tipo `json_schema`, timeout di 45 secondi (dopo i 120 di Ollama si resta sotto i 180 di nginx e php-fpm) ed è saltato se manca la chiave.
+- **Salvataggio**: `PUT /lives/{live}/setlist` accetta `setlist_notes` facoltativo; se non viene inviato le note restano quelle attuali. Il frontend invia le note solo se la proposta ne ha.
+- **Frontend**: la cronologia vive nello stato di `ChatWindow`, quindi si azzera anche cambiando tab. Il selettore del live di destinazione elenca i live futuri, con il prossimo come default; senza live futuri la card invita a crearne uno. Nessun selettore di `live_id` nella chat: il frontend non lo invia. Con 429 compare un messaggio dedicato ("Troppe richieste"). La risposta vuota dell'AI viene sostituita da un testo tradotto, perché l'API rifiuta messaggi vuoti nella cronologia; i messaggi dell'assistente inviati come cronologia sono troncati a 2000 caratteri.
 
 ## Docker & deployment
 

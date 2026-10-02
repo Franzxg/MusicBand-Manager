@@ -869,10 +869,10 @@ Riordina la scaletta. `song_ids` deve contenere tutti e soli i brani della scale
 
 ### PUT /lives/{live}/setlist
 
-Sostituisce la scaletta con l'elenco dato, nell'ordine dato. Serve a salvare la proposta della chat AI. Accetta anche `[]` (svuota la scaletta). Brani di un'altra band: 422 su `song_ids`. **200** con il dettaglio.
+Sostituisce la scaletta con l'elenco dato, nell'ordine dato. Serve a salvare la proposta della chat AI. Accetta anche `[]` (svuota la scaletta). `setlist_notes` è facoltativo: se presente sostituisce le note della scaletta, altrimenti restano quelle attuali. Brani di un'altra band: 422 su `song_ids`. **200** con il dettaglio.
 
 ```json
-{ "song_ids": [17, 18] }
+{ "song_ids": [17, 18], "setlist_notes": "Chiudere con il pezzo più energico" }
 ```
 
 ```json
@@ -1030,31 +1030,54 @@ Le prove hanno `"type": "rehearsal"` e gli stessi campi.
 
 ### POST /bands/{band}/chat
 
-**Da completare nella fase 8**: l'endpoint non esiste ancora (oggi risponde 404). Il formato qui sotto viene dalle specifiche ("Integrazione AI"); va sostituito con una risposta reale quando l'endpoint sarà pronto.
+Chat con il modello locale (Ollama) sui dati della band. Il backend non conserva la conversazione: il frontend invia ogni volta gli ultimi messaggi. Su CPU la risposta può richiedere decine di secondi (attesa massima `OLLAMA_TIMEOUT`, 120 s).
 
-Massimo 10 richieste al minuto (poi 429). `messages`: da 1 a 10 elementi, `role` = `user` o `assistant`, `content` fino a 2000 caratteri, l'ultimo deve essere `user`. `live_id` facoltativo, un live della stessa band.
+Massimo 10 richieste al minuto per utente (poi 429). `messages`: da 1 a 10 elementi, `role` = `user` o `assistant`, `content` fino a 2000 caratteri, l'ultimo deve essere `user` (altrimenti 422 su `messages`). `live_id` facoltativo: un live della stessa band (altrimenti 422 su `live_id`) su cui concentrare il contesto. Chi non è membro della band riceve 403.
 
 ```json
 {
   "messages": [
-    { "role": "user", "content": "Proponi una scaletta di circa 30 minuti per il prossimo live" }
+    { "role": "user", "content": "Proponi una scaletta di circa 30 minuti per questo live, con apertura energica" }
   ],
-  "live_id": 4
+  "live_id": 2
 }
 ```
 
-**200** (esempio dalle specifiche)
+**200** (risposta reale di `llama3.2:3b` sui dati demo, in circa 18 secondi)
 
 ```json
 {
-  "reply": "Ecco una scaletta da circa 45 minuti...",
+  "reply": "Scegliamo una scaletta che inizia con un grande impacto, con 'Smells Like Teen Spirit' e 'Back in Black' per esempio. Questo ci permetterà di coinvolgere il pubblico e creare un'atmosfera energica.",
   "setlist_proposal": {
-    "song_ids": [12, 5, 8],
-    "songs": [{ "id": 12, "title": "...", "artist": "...", "musical_key": "Am", "duration_seconds": 215 }],
-    "total_duration_seconds": 2640,
-    "notes": "Aprire con un brano energico"
+    "song_ids": [2, 5, 7, 12, 10],
+    "songs": [
+      { "id": 2, "title": "Smells Like Teen Spirit", "artist": "Nirvana", "version": "", "musical_key": "Fm", "duration_seconds": 301 },
+      { "id": 5, "title": "Back in Black", "artist": "AC/DC", "version": "", "musical_key": "E", "duration_seconds": 255 },
+      { "id": 7, "title": "Zombie", "artist": "The Cranberries", "version": "", "musical_key": "Em", "duration_seconds": 306 },
+      { "id": 12, "title": "Albachiara", "artist": "Vasco Rossi", "version": "", "musical_key": "C", "duration_seconds": 260 },
+      { "id": 10, "title": "Mr. Brightside", "artist": "The Killers", "version": "", "musical_key": "C#", "duration_seconds": 222 }
+    ],
+    "total_duration_seconds": 1344,
+    "notes": "Una scaletta che cerca di bilanciare energia e calma, con un finale carico e coinvolgente."
   }
 }
 ```
 
-`setlist_proposal` è `null` se il modello non propone una scaletta. Per salvarla si usa `PUT /lives/{live}/setlist` con `song_ids`. Errori: 422 per dati non validi, 503 se l'AI non è disponibile.
+**200** senza proposta (domanda "Quali brani devo ancora studiare?"):
+
+```json
+{
+  "reply": "Devi ancora studiare 'Imagine' di John Lennon e 'La cura' di Franco Battiato.",
+  "setlist_proposal": null
+}
+```
+
+- Gli id proposti sono solo brani del repertorio della band: lo schema JSON inviato a Ollama ha un `enum` degli id, e il backend scarta comunque id non validi e doppioni.
+- `total_duration_seconds` è calcolata dal backend. Un modello piccolo può non rispettare la durata richiesta (qui 22:24 invece di 30 minuti), per questo l'interfaccia mostra sempre la durata reale. `notes` può essere `null`.
+- Per salvare la proposta: [PUT /lives/{live}/setlist](#put-liveslivesetlist) con `song_ids` e, se presenti, le note come `setlist_notes`.
+
+**503**: Ollama irraggiungibile, modello non ancora scaricato o oltre il timeout, con il fallback OpenRouter spento o fallito.
+
+```json
+{ "message": "AI non disponibile. Riprova tra poco." }
+```

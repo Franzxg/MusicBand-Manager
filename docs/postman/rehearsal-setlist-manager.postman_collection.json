@@ -1846,10 +1846,10 @@
                 "setlist"
               ]
             },
-            "description": "Usata per salvare la proposta della chat AI. Un elenco vuoto svuota la scaletta.",
+            "description": "Usata per salvare la proposta della chat AI. Un elenco vuoto svuota la scaletta. setlist_notes è facoltativo: se presente sostituisce le note della scaletta.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"song_ids\": [\n    {{songId}},\n    {{song2Id}}\n  ]\n}",
+              "raw": "{\n  \"song_ids\": [\n    {{songId}},\n    {{song2Id}}\n  ],\n  \"setlist_notes\": \"Proposta della chat AI\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2247,8 +2247,69 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status 200 o 503 o 404', function () {",
-                  "    pm.expect([200,503,404]).to.include(pm.response.code);",
+                  "pm.test('Status 200 o 503 (AI non disponibile)', function () {",
+                  "    pm.expect([200,503]).to.include(pm.response.code);",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.test('Risposta con reply e setlist_proposal', function () {",
+                  "        const body = pm.response.json();",
+                  "        pm.expect(body.reply).to.be.a('string');",
+                  "        pm.expect(body).to.have.property('setlist_proposal');",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "it"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bands/{{bandId}}/chat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bands",
+                "{{bandId}}",
+                "chat"
+              ]
+            },
+            "description": "Risponde 200 con reply e setlist_proposal (null se il modello non propone una scaletta), oppure 503 se l'AI non è disponibile (Ollama spento, modello non scaricato o timeout). Su CPU può richiedere decine di secondi. Massimo 10 richieste al minuto.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Proponi una scaletta di circa 30 minuti per il prossimo live\"\n    }\n  ],\n  \"live_id\": {{live2Id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Chat AI (ultimo messaggio dell'assistente: 422 atteso)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 422', function () {",
+                  "    pm.response.to.have.status(422);",
                   "});"
                 ]
               }
@@ -2281,10 +2342,10 @@
                 "chat"
               ]
             },
-            "description": "Da completare nella fase 8. Risponde 200, oppure 503 se Ollama non è disponibile. Finché l'endpoint non esiste risponde 404.",
+            "description": "Il backend valida la richiesta prima di chiamare il modello: risponde subito, anche senza Ollama.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Proponi una scaletta di circa 30 minuti per il prossimo live\"\n    }\n  ],\n  \"live_id\": {{live2Id}}\n}",
+              "raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Ciao\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"Ciao! Come posso aiutarti?\"\n    }\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
