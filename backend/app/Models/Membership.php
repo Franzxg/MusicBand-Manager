@@ -27,6 +27,7 @@ class Membership extends Pivot
 
     public function instruments(): HasMany
     {
-        return $this->hasMany(MemberInstrument::class, 'band_user_id');
+        // Nell'ordine in cui sono stati inseriti
+        return $this->hasMany(MemberInstrument::class, 'band_user_id')->orderBy('id');
     }
 }

@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
                 'email' => $user->getEmailForPasswordReset(),
             ]);
         });
+
+        // Ingresso in una band con codice: 10 tentativi al minuto per utente
+        RateLimiter::for('join', fn (Request $request) => Limit::perMinute(10)->by($request->user()->id));
     }
 }

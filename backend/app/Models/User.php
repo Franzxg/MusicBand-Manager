@@ -41,4 +41,9 @@ class User extends Authenticatable
             ->withPivot('id')
             ->withTimestamps();
     }
+
+    public function isMemberOf(Band $band): bool
+    {
+        return $this->memberships()->where('band_id', $band->id)->exists();
+    }
 }
