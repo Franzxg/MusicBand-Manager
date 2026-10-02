@@ -176,6 +176,37 @@ L'app deve funzionare bene su smartphone (da 360 px di larghezza), tablet (verti
 - **Touch**: pulsanti e icone cliccabili di almeno 44 × 44 px, nessuna funzione disponibile solo al passaggio del mouse, zoom della pagina non bloccato, funzionamento in verticale e in orizzontale.
 - **Verifica**: ogni pagina si controlla a 360, 768 e 1280 px (strumenti del browser), in tema chiaro e scuro e nelle due lingue. I testi in italiano, più lunghi, non devono nascondere informazioni. Nessun test automatico richiesto; gli screenshot del README includono almeno una schermata da smartphone.
 
+### Decisioni di implementazione (fase 5)
+
+Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle specifiche.
+
+**Struttura**
+
+- Versioni: MUI 9, React Router 7, i18next 26 con react-i18next 17 (`i18next` è la dipendenza richiesta da `react-i18next`).
+- Gli oggetti Context sono in `src/context/contexts.js`, i Provider in `src/context/*Provider.jsx` e gli hook (`useAuth`, `useThemeMode`, `useLanguage`, `useNotification`) in `src/hooks/`: la regola `react-refresh` di ESLint non vuole componenti e altro nello stesso file.
+- Oltre ad auth, tema e lingua c'è un quarto Context per le notifiche (`NotificationProvider`), che mostra la Snackbar globale per errori di rete e conferme.
+- `src/i18n.js` inizializza i18next; la Guida legge le sezioni da `guide.sections` (array in `it.json` ed `en.json`, con `returnObjects`).
+- `useApiErrorHandler` gestisce gli errori delle richieste: un 422 va sotto i campi (primo messaggio di ogni campo); errori di rete e altri errori vanno nella Snackbar; il 401 lo gestisce il client axios.
+- In `@mui/icons-material` 9 alcune icone hanno nomi diversi dalla documentazione più vecchia (es. `HelpOutlined`, non `HelpOutline`): se la build non trova un'icona, controlla il nome in `node_modules/@mui/icons-material`.
+
+**Autenticazione e navigazione**
+
+- Il token è salvato in `localStorage` (chiave `token`); le altre chiavi sono `themeMode` e `language`.
+- Al caricamento, con un token salvato, il frontend legge l'utente con `GET /me` senza bloccare la pagina (il nome in Navbar compare appena arriva).
+- Un 401 con token presente cancella il token, avvisa l'`AuthProvider` con l'evento `auth:unauthorized` e mostra "Sessione scaduta"; la route protetta riporta a `/login`.
+- Dopo il login si torna alla pagina protetta richiesta prima (`location.state.from`), altrimenti alla Dashboard.
+- Con il token presente solo `/login` e `/register` portano alla Dashboard; `/forgot-password` e `/reset-password` restano raggiungibili.
+- Reset password: se il link non ha `token` o `email` la pagina invita a chiederne uno nuovo; un token scaduto o non valido (errore 422 sul campo `email`) compare in un avviso sopra il form, con il link per un nuovo invio; dopo il reset si va al login con una notifica di conferma.
+- Guida e 404 mostrano la Navbar se l'utente è loggato, altrimenti l'intestazione pubblica con lingua, tema e "Accedi".
+- Dashboard e Profilo sono segnaposto fino alle fasi 6 e 9.
+
+**Tema e accessibilità**
+
+- Tema scuro: testo secondario bianco all'80% di opacità; link e pulsanti di testo o con contorno sono bianchi, perché `#778DA9` sulle superfici `#1B263B` non raggiunge 4.5:1. I pulsanti pieni usano `#778DA9` con testo `#0D1B2A`.
+- Tema chiaro: divisori e bordi in `#778DA9` al 50% di opacità; navbar `#1B263B` con testo bianco in entrambi i temi.
+- Il tema impone un'altezza minima di 44 px a `Button`, `IconButton`, `ListItemButton` e `MenuItem`.
+- La build segnala un bundle sopra i 500 kB (soprattutto MUI): è solo un avviso, accettato.
+
 ## Backend & API
 
 Laravel espone un'API REST JSON sotto il prefisso `/api`, protetta da token Sanctum; ogni utente accede solo ai dati delle band di cui è membro.
@@ -343,6 +374,17 @@ Per testare tutti gli endpoint senza il frontend, il repository include una coll
 - **Id automatici**: gli script di test delle richieste di creazione (band, canzone, live, prova) salvano l'id ricevuto nella variabile corrispondente, così le richieste successive funzionano in sequenza.
 - **Test base**: ogni richiesta verifica il codice atteso (es. 201 alla creazione, 422 per dati non validi), eseguibili con il Collection Runner.
 - Il README spiega come importare la collection e l'environment.
+
+**Decisioni di implementazione (fase 4)**
+
+- `docs/API.md` contiene risposte reali, ottenute eseguendo la collection con `newman` e, per i casi che la collection non copre (`join` riuscito, reset con token vero), con `curl` sugli account demo.
+- La collection si esegue in ordine con il Collection Runner o con `npx newman run` (comando nel README) e si può rieseguire più volte: crea un utente nuovo a ogni esecuzione e alla fine lo elimina. La cartella Profilo è l'ultima, perché termina con l'eliminazione dell'account.
+- Variabili aggiuntive salvate dagli script: `userId`, `email`, `password`, `inviteCode`, `tempBandId`, `song2Id`, `live2Id` e, per il secondo utente, `token2`, `user2Id`, `email2`.
+- Un secondo utente ("Registra secondo membro") entra nella band con il codice usando `token2`, così `join` è provato sia riuscito (201) sia rifiutato (422, utente già membro). Alla fine anche il suo account viene eliminato e la band, rimasta senza membri, sparisce.
+- Due band temporanee servono a provare l'eliminazione della band e l'uscita dell'ultimo membro senza toccare la band usata dalle cartelle successive.
+- Le richieste con errore atteso lo dichiarano nel nome, es. "Reset password (token finto: 422 atteso)": il token vero arriva solo via email (Mailpit).
+- Ogni richiesta invia anche `Accept-Language: it`. La richiesta della chat accetta 200, 503 o 404 finché l'endpoint non esiste (fase 8).
+- Con `APP_DEBUG=true` le risposte 403, 404 e 500 contengono anche lo stack trace: il frontend usa solo lo status e, al massimo, `message`.
 
 ## Database
 
