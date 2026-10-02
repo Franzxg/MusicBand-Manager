@@ -2,27 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\Band;
 use App\Models\Membership;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Tests\Concerns\CreatesBands;
 use Tests\TestCase;
 
 class BandMemberTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private function bandWith(User ...$users): Band
-    {
-        $band = Band::create(['name' => 'The Testers', 'invite_code' => Band::generateInviteCode()]);
-        foreach ($users as $user) {
-            Membership::create(['band_id' => $band->id, 'user_id' => $user->id])
-                ->instruments()->create(['instrument' => 'Chitarra']);
-        }
-
-        return $band;
-    }
+    use CreatesBands, RefreshDatabase;
 
     public function test_member_can_replace_own_instruments(): void
     {
