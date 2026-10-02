@@ -198,7 +198,7 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 - Con il token presente solo `/login` e `/register` portano alla Dashboard; `/forgot-password` e `/reset-password` restano raggiungibili.
 - Reset password: se il link non ha `token` o `email` la pagina invita a chiederne uno nuovo; un token scaduto o non valido (errore 422 sul campo `email`) compare in un avviso sopra il form, con il link per un nuovo invio; dopo il reset si va al login con una notifica di conferma.
 - Guida e 404 mostrano la Navbar se l'utente è loggato, altrimenti l'intestazione pubblica con lingua, tema e "Accedi".
-- Dashboard e Profilo sono segnaposto fino alle fasi 6 e 9.
+- Il Profilo è un segnaposto fino alla fase 9.
 
 **Tema e accessibilità**
 
@@ -206,6 +206,32 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 - Tema chiaro: divisori e bordi in `#778DA9` al 50% di opacità; navbar `#1B263B` con testo bianco in entrambi i temi.
 - Il tema impone un'altezza minima di 44 px a `Button`, `IconButton`, `ListItemButton` e `MenuItem`.
 - La build segnala un bundle sopra i 500 kB (soprattutto MUI): è solo un avviso, accettato.
+- L'override che rende bianchi i pulsanti di testo e con contorno nel tema scuro vale solo per il colore `primary`: i pulsanti `color="error"` restano rossi.
+
+### Decisioni di implementazione (fase 6)
+
+**Librerie e date**
+
+- FullCalendar 6.1 (`@fullcalendar/react`, `daygrid`, `list`, `interaction`, più `@fullcalendar/core`, dipendenza richiesta dai plugin). La 7 non ha ancora i plugin allineati.
+- MUI X Date Pickers 9 e dayjs si installano già nella fase 6, per la finestra della prova aperta dal calendario.
+- `src/dates.js` tiene la lingua di dayjs allineata a i18next e converte il valore del DateTimePicker in ISO UTC (`toApiDate`); `DatesProvider` imposta `LocalizationProvider` di MUI X con lingua e testi it/en.
+
+**Dashboard e calendario**
+
+- Dopo "Crea band" o "Unisciti" si apre la pagina della nuova band, con una notifica di conferma.
+- Il calendario chiede a `GET /calendar` l'intervallo visibile. Su `xs` vista `listMonth`, da `sm` griglia mensile con i pulsanti Mese/Elenco.
+- Colori degli eventi con classi CSS (`event-live`, `event-rehearsal`) e variabili di FullCalendar prese dal tema: live pieno, prova con il solo contorno (anche il pallino nella vista elenco è vuoto). Il titolo inizia con "Live:" o "Prova:", quindi il tipo non dipende solo dal colore. Nella griglia: ora e "Tipo: band"; nell'elenco si aggiunge il luogo.
+- L'evento del calendario non contiene le note della prova: al click il frontend legge `GET /bands/{band}/rehearsals?from=<starts_at>` e cerca la prova per id. Dopo modifica o eliminazione il calendario si ricarica.
+- Click su un live: `/bands/:bandId/lives/:liveId`, segnaposto fino alla fase 7.
+
+**Dettaglio Band e Membri**
+
+- Tab in `?tab=` (`members`, `songs`, `lives`, `rehearsals`, `chat`; valore assente o sconosciuto: `members`). Repertorio, Live e Prove arrivano nella fase 7, la Chat nella fase 8.
+- Band inesistente (404) o di cui non si è membri (403): stesso messaggio, con link alla Dashboard.
+- Strumenti: Autocomplete multiplo con testo libero; i suggerimenti sono in `instruments.suggestions` dei file di lingua. Il testo scritto si aggiunge con Invio o uscendo dal campo; il frontend toglie spazi, doppioni (senza distinguere maiuscole) e oltre 10 valori.
+- Codice di invito: copia con `navigator.clipboard` (in caso di errore una notifica invita a copiarlo a mano); "Rigenera" chiede conferma.
+- Uscire dalla band chiede conferma e, se si è l'ultimo membro, avvisa che la band verrà eliminata; dopo l'uscita si torna alla Dashboard.
+- Finestre comuni: `FormDialog` (form con Annulla e Salva) e `ConfirmDialog` (conferma, rossa per le eliminazioni), entrambe a schermo intero su `xs`.
 
 ## Backend & API
 
