@@ -238,6 +238,8 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 **Struttura**
 
 - `useApiData(fetcher)` è l'hook comune per leggere dati (caricamento, errore, ricarica); `useBands`, `useBand`, `useSongs` e `useLive` lo usano.
+- `formatDateTime` in `src/dates.js` mostra data e ora nel fuso del browser e nella lingua scelta, con il formato dayjs `ddd LL, LT` (es. "mer 14 ottobre 2026, 21:30" / "Wed October 14, 2026, 9:30 PM").
+- La "band corrente" nella Navbar (vedi Componenti riutilizzabili) non è ancora fatta: è rinviata alla fase 9. Il nome della band compare per ora nell'intestazione della pagina della band e nel pulsante "indietro" della pagina del live.
 - `src/songs.js`: stati, formato della durata (`m:ss`, anche oltre l'ora, es. `75:30`) e conversione tra form e body dell'API.
 - `EventDialog` serve sia ai live sia alle prove, in creazione e modifica (sostituisce la finestra della prova della fase 6). Elenchi dei tab Live e Prove con lo stesso componente `EventsTab`.
 - `@dnd-kit/sortable` porta con sé `@dnd-kit/utilities`, che non si importa direttamente: lo spostamento del brano trascinato è scritto a mano (solo verticale).
