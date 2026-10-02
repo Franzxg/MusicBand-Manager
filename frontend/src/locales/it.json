@@ -1,0 +1,160 @@
+{
+  "app": {
+    "name": "Music Band Manager"
+  },
+  "common": {
+    "loading": "Caricamento in corso…"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "guide": "Guida",
+    "profile": "Profilo",
+    "logout": "Esci",
+    "login": "Accedi",
+    "openMenu": "Apri il menu",
+    "closeMenu": "Chiudi il menu",
+    "userMenu": "Menu utente",
+    "home": "Vai alla dashboard"
+  },
+  "theme": {
+    "toDark": "Passa al tema scuro",
+    "toLight": "Passa al tema chiaro"
+  },
+  "language": {
+    "label": "Lingua",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "fields": {
+    "name": "Nome",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirmation": "Conferma password",
+    "newPassword": "Nuova password",
+    "newPasswordConfirmation": "Conferma nuova password"
+  },
+  "auth": {
+    "login": {
+      "title": "Accedi",
+      "intro": "Gestisci repertorio, prove e live della tua band.",
+      "submit": "Accedi"
+    },
+    "register": {
+      "title": "Crea un account",
+      "submit": "Registrati",
+      "passwordHelp": "Almeno 8 caratteri"
+    },
+    "forgot": {
+      "title": "Password dimenticata",
+      "intro": "Scrivi l'email del tuo account: ti invieremo un link per scegliere una nuova password.",
+      "submit": "Invia il link",
+      "sent": "Se l'email è registrata, riceverai a breve un messaggio con il link per reimpostare la password. Il link vale 60 minuti."
+    },
+    "reset": {
+      "title": "Reimposta la password",
+      "intro": "Scegli una nuova password per {{email}}.",
+      "submit": "Salva la nuova password",
+      "success": "Password reimpostata. Ora puoi accedere con la nuova password.",
+      "invalidLink": "Il link non è completo. Apri di nuovo il link ricevuto via email oppure richiedine uno nuovo."
+    },
+    "links": {
+      "forgot": "Password dimenticata?",
+      "register": "Non hai un account? Registrati",
+      "login": "Hai già un account? Accedi",
+      "guide": "Come funziona",
+      "backToLogin": "Torna al login",
+      "newLink": "Richiedi un nuovo link"
+    }
+  },
+  "errors": {
+    "network": "Impossibile contattare il server. Controlla la connessione e riprova.",
+    "generic": "Si è verificato un errore. Riprova.",
+    "sessionExpired": "La sessione è scaduta. Accedi di nuovo."
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "text": "La pagina che cerchi non esiste o è stata spostata.",
+    "toDashboard": "Vai alla dashboard"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Ciao, {{name}}!",
+    "placeholder": "Qui troverai le tue band e il calendario di prove e live."
+  },
+  "profile": {
+    "title": "Profilo",
+    "placeholder": "Qui potrai modificare i tuoi dati e la password."
+  },
+  "guide": {
+    "title": "Come funziona",
+    "intro": "Una guida veloce a tutte le funzioni dell'app.",
+    "index": "Indice",
+    "sections": [
+      {
+        "id": "about",
+        "title": "Cos'è l'app e a chi serve",
+        "paragraphs": [
+          "Music Band Manager aiuta una band a organizzarsi: chi suona cosa, quali brani conosce il gruppo, quando sono le prove e i concerti e quali canzoni suonare in ogni live.",
+          "È pensata per gruppi amatoriali e semiprofessionali: tutti i membri vedono gli stessi dati e hanno gli stessi permessi."
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Iniziare",
+        "paragraphs": [
+          "Registrati con nome, email e una password di almeno 8 caratteri, oppure accedi se hai già un account. Se dimentichi la password, dal login puoi farti inviare un link per sceglierne una nuova.",
+          "Dopo l'accesso puoi creare una band, indicando nome, genere e i tuoi strumenti, oppure entrare in una band esistente con il codice di invito che ti hanno passato gli altri membri."
+        ]
+      },
+      {
+        "id": "bands",
+        "title": "Band e membri",
+        "paragraphs": [
+          "Ogni membro indica i propri strumenti, anche più di uno, e può modificarli quando vuole. Gli altri vedono solo il tuo nome e i tuoi strumenti, mai la tua email.",
+          "Il codice di invito è nella sezione Membri: puoi copiarlo e condividerlo, oppure rigenerarlo per rendere inutilizzabile quello vecchio.",
+          "Qualsiasi membro può rimuovere un altro membro o eliminare la band. Puoi anche uscire da una band: se eri l'ultimo membro, la band viene eliminata."
+        ]
+      },
+      {
+        "id": "songs",
+        "title": "Repertorio",
+        "paragraphs": [
+          "Il repertorio contiene tutte le canzoni del gruppo: titolo, artista, versione (per distinguere, ad esempio, una versione acustica), link, durata, tonalità, energia da 1 a 5, BPM e note.",
+          "Ogni canzone ha uno stato di studio: Da studiare, In studio o Completata. Puoi cambiarlo velocemente dal badge della canzone e cercare o filtrare il repertorio per stato."
+        ]
+      },
+      {
+        "id": "lives",
+        "title": "Live e scalette",
+        "paragraphs": [
+          "Per ogni live indichi luogo, data e ora e costruisci la scaletta: aggiungi brani dal repertorio oppure inseriscine di nuovi, che vengono salvati anche nel repertorio.",
+          "Puoi riordinare la scaletta trascinando i brani o con i pulsanti sposta su e sposta giù, e copiarla da un altro live. L'app mostra la durata totale e la percentuale di brani già completati."
+        ]
+      },
+      {
+        "id": "calendar",
+        "title": "Prove e calendario",
+        "paragraphs": [
+          "Le prove hanno luogo, data, ora e note. Nella dashboard un unico calendario raccoglie prove e live di tutte le tue band: i live sono pieni, le prove hanno solo il contorno, e ogni evento riporta il nome della band.",
+          "Le date si inseriscono nel tuo orario locale e vengono mostrate nel fuso del tuo dispositivo."
+        ]
+      },
+      {
+        "id": "chat",
+        "title": "Chat AI",
+        "paragraphs": [
+          "La chat conosce il repertorio, i live e le prove della band: puoi chiederle consigli o una proposta di scaletta, che poi puoi salvare in un live.",
+          "Usa un modello che gira sul server, senza servizi esterni: le risposte possono essere lente e a volte sbagliate, quindi controllale sempre. La conversazione non viene salvata."
+        ]
+      },
+      {
+        "id": "settings",
+        "title": "Profilo, tema e lingua",
+        "paragraphs": [
+          "Dal menu utente apri il profilo, dove puoi modificare nome ed email, cambiare la password o eliminare l'account.",
+          "Dalla barra in alto scegli il tema chiaro o scuro e la lingua, italiano o inglese: le scelte restano salvate in questo browser."
+        ]
+      }
+    ]
+  }
+}

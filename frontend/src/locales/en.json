@@ -1,0 +1,160 @@
+{
+  "app": {
+    "name": "Music Band Manager"
+  },
+  "common": {
+    "loading": "Loading…"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "guide": "Guide",
+    "profile": "Profile",
+    "logout": "Log out",
+    "login": "Log in",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "userMenu": "User menu",
+    "home": "Go to dashboard"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "language": {
+    "label": "Language",
+    "it": "Italiano",
+    "en": "English"
+  },
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirmation": "Confirm password",
+    "newPassword": "New password",
+    "newPasswordConfirmation": "Confirm new password"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "intro": "Manage your band's repertoire, rehearsals and gigs.",
+      "submit": "Log in"
+    },
+    "register": {
+      "title": "Create an account",
+      "submit": "Sign up",
+      "passwordHelp": "At least 8 characters"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "intro": "Enter your account email: we will send you a link to choose a new password.",
+      "submit": "Send the link",
+      "sent": "If the email is registered, you will soon receive a message with a link to reset your password. The link is valid for 60 minutes."
+    },
+    "reset": {
+      "title": "Reset your password",
+      "intro": "Choose a new password for {{email}}.",
+      "submit": "Save the new password",
+      "success": "Password reset. You can now log in with the new password.",
+      "invalidLink": "The link is incomplete. Open the link you received by email again or request a new one."
+    },
+    "links": {
+      "forgot": "Forgot your password?",
+      "register": "No account yet? Sign up",
+      "login": "Already have an account? Log in",
+      "guide": "How it works",
+      "backToLogin": "Back to login",
+      "newLink": "Request a new link"
+    }
+  },
+  "errors": {
+    "network": "Cannot reach the server. Check your connection and try again.",
+    "generic": "Something went wrong. Please try again.",
+    "sessionExpired": "Your session has expired. Please log in again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The page you are looking for does not exist or has been moved.",
+    "toDashboard": "Go to dashboard"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Hi, {{name}}!",
+    "placeholder": "Your bands and the calendar of rehearsals and gigs will appear here."
+  },
+  "profile": {
+    "title": "Profile",
+    "placeholder": "Here you will be able to edit your details and password."
+  },
+  "guide": {
+    "title": "How it works",
+    "intro": "A quick guide to every feature of the app.",
+    "index": "Contents",
+    "sections": [
+      {
+        "id": "about",
+        "title": "What the app is and who it is for",
+        "paragraphs": [
+          "Music Band Manager helps a band get organised: who plays what, which songs the band knows, when rehearsals and gigs are, and which songs to play at each gig.",
+          "It is designed for amateur and semi-professional bands: all members see the same data and have the same permissions."
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Getting started",
+        "paragraphs": [
+          "Sign up with your name, email and a password of at least 8 characters, or log in if you already have an account. If you forget your password, you can request a link to choose a new one from the login page.",
+          "Once logged in you can create a band, with its name, genre and your instruments, or join an existing band with the invite code the other members gave you."
+        ]
+      },
+      {
+        "id": "bands",
+        "title": "Bands and members",
+        "paragraphs": [
+          "Each member lists their own instruments, even more than one, and can change them at any time. The others only see your name and instruments, never your email.",
+          "The invite code is in the Members section: you can copy and share it, or regenerate it so that the old one stops working.",
+          "Any member can remove another member or delete the band. You can also leave a band: if you were the last member, the band is deleted."
+        ]
+      },
+      {
+        "id": "songs",
+        "title": "Repertoire",
+        "paragraphs": [
+          "The repertoire holds all the band's songs: title, artist, version (to tell apart, for example, an acoustic version), link, duration, key, energy from 1 to 5, BPM and notes.",
+          "Each song has a study status: To study, Studying or Completed. You can change it quickly from the song badge and search or filter the repertoire by status."
+        ]
+      },
+      {
+        "id": "lives",
+        "title": "Gigs and setlists",
+        "paragraphs": [
+          "For each gig you set the place, date and time and build the setlist: add songs from the repertoire or enter new ones, which are saved to the repertoire too.",
+          "You can reorder the setlist by dragging songs or with the move up and move down buttons, and copy it from another gig. The app shows the total duration and the percentage of songs already completed."
+        ]
+      },
+      {
+        "id": "calendar",
+        "title": "Rehearsals and calendar",
+        "paragraphs": [
+          "Rehearsals have a place, date, time and notes. On the dashboard a single calendar collects the rehearsals and gigs of all your bands: gigs are filled, rehearsals are outlined, and each event shows the band name.",
+          "Dates are entered in your local time and shown in your device's time zone."
+        ]
+      },
+      {
+        "id": "chat",
+        "title": "AI chat",
+        "paragraphs": [
+          "The chat knows the band's repertoire, gigs and rehearsals: you can ask it for advice or for a setlist proposal, which you can then save to a gig.",
+          "It uses a model running on the server, with no external services: answers can be slow and sometimes wrong, so always check them. The conversation is not saved."
+        ]
+      },
+      {
+        "id": "settings",
+        "title": "Profile, theme and language",
+        "paragraphs": [
+          "From the user menu you open your profile, where you can edit your name and email, change your password or delete your account.",
+          "From the top bar you choose the light or dark theme and the language, Italian or English: your choices are saved in this browser."
+        ]
+      }
+    ]
+  }
+}
