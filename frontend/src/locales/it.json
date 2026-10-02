@@ -3,7 +3,11 @@
     "name": "Music Band Manager"
   },
   "common": {
-    "loading": "Caricamento in corso…"
+    "loading": "Caricamento in corso…",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "delete": "Elimina",
+    "retry": "Riprova"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -31,7 +35,14 @@
     "password": "Password",
     "passwordConfirmation": "Conferma password",
     "newPassword": "Nuova password",
-    "newPasswordConfirmation": "Conferma nuova password"
+    "newPasswordConfirmation": "Conferma nuova password",
+    "bandName": "Nome della band",
+    "genre": "Genere",
+    "instruments": "I tuoi strumenti",
+    "inviteCode": "Codice di invito",
+    "place": "Luogo",
+    "startsAt": "Data e ora",
+    "notes": "Note"
   },
   "auth": {
     "login": {
@@ -78,8 +89,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Ciao, {{name}}!",
-    "placeholder": "Qui troverai le tue band e il calendario di prove e live."
+    "welcome": "Ciao, {{name}}!"
   },
   "profile": {
     "title": "Profilo",
@@ -156,5 +166,142 @@
         ]
       }
     ]
+  },
+  "instruments": {
+    "help": "Scegli dai suggerimenti o scrivi e premi Invio (massimo 10)",
+    "suggestions": [
+      "Voce",
+      "Cori",
+      "Chitarra elettrica",
+      "Chitarra acustica",
+      "Basso",
+      "Batteria",
+      "Percussioni",
+      "Tastiere",
+      "Pianoforte",
+      "Sintetizzatore",
+      "Violino",
+      "Violoncello",
+      "Contrabbasso",
+      "Sassofono",
+      "Tromba",
+      "Trombone",
+      "Flauto",
+      "Clarinetto",
+      "Armonica",
+      "Fisarmonica",
+      "Ukulele",
+      "DJ"
+    ]
+  },
+  "bands": {
+    "title": "Le tue band",
+    "empty": "Non fai ancora parte di nessuna band. Creane una oppure unisciti con il codice di invito che ti hanno passato.",
+    "loadError": "Impossibile caricare le band.",
+    "membersCount_one": "{{count}} membro",
+    "membersCount_other": "{{count}} membri",
+    "myInstruments": "I tuoi strumenti",
+    "create": {
+      "button": "Crea band",
+      "title": "Crea una band",
+      "submit": "Crea",
+      "success": "Band «{{name}}» creata."
+    },
+    "join": {
+      "button": "Unisciti a una band",
+      "title": "Unisciti a una band",
+      "submit": "Unisciti",
+      "codeHelp": "8 caratteri, li trovi nella sezione Membri della band",
+      "tooManyAttempts": "Troppi tentativi. Aspetta un minuto e riprova.",
+      "success": "Ora fai parte di «{{name}}»."
+    }
+  },
+  "calendar": {
+    "title": "Calendario",
+    "live": "Live",
+    "rehearsal": "Prova",
+    "empty": "Nessun live o prova in questo mese.",
+    "error": "Impossibile caricare il calendario.",
+    "prev": "Mese precedente",
+    "next": "Mese successivo",
+    "today": "Vai a oggi",
+    "todayButton": "Oggi",
+    "month": "Mese",
+    "list": "Elenco"
+  },
+  "rehearsal": {
+    "editTitle": "Modifica prova",
+    "editTitleBand": "Prova di {{band}}",
+    "saved": "Prova aggiornata.",
+    "deleted": "Prova eliminata.",
+    "delete": {
+      "title": "Eliminare la prova?",
+      "text": "La prova verrà eliminata per tutti i membri della band. L'operazione non si può annullare."
+    }
+  },
+  "band": {
+    "back": "Dashboard",
+    "tabsLabel": "Sezioni della band",
+    "tabs": {
+      "members": "Membri",
+      "songs": "Repertorio",
+      "lives": "Live",
+      "rehearsals": "Prove",
+      "chat": "Chat AI"
+    },
+    "comingSoon": "Questa sezione sarà disponibile a breve.",
+    "notFound": "Questa band non esiste o non ne fai parte.",
+    "loadError": "Impossibile caricare la band.",
+    "edit": {
+      "button": "Modifica",
+      "title": "Modifica la band",
+      "success": "Band aggiornata."
+    },
+    "delete": {
+      "button": "Elimina band",
+      "title": "Eliminare la band?",
+      "text": "«{{name}}» verrà eliminata per tutti i membri, insieme a repertorio, live, scalette e prove. L'operazione non si può annullare.",
+      "confirm": "Elimina band",
+      "success": "Band «{{name}}» eliminata."
+    }
+  },
+  "members": {
+    "title": "Membri ({{count}})",
+    "me": "{{name}} (tu)",
+    "invite": {
+      "title": "Codice di invito",
+      "help": "Condividilo con chi vuoi far entrare nella band.",
+      "copy": "Copia il codice di invito",
+      "copied": "Codice copiato.",
+      "copyError": "Impossibile copiare il codice: selezionalo e copialo a mano.",
+      "regenerate": "Rigenera",
+      "regenerateTitle": "Rigenerare il codice?",
+      "regenerateText": "Il codice attuale smetterà di funzionare e dovrai condividere quello nuovo. I membri già presenti restano nella band.",
+      "regenerated": "Nuovo codice di invito creato."
+    },
+    "instruments": {
+      "edit": "Modifica strumenti",
+      "title": "I tuoi strumenti",
+      "saved": "Strumenti aggiornati."
+    },
+    "remove": {
+      "button": "Rimuovi {{name}} dalla band",
+      "title": "Rimuovere il membro?",
+      "text": "{{name}} non vedrà più repertorio, live e prove della band. Potrà rientrare solo con il codice di invito.",
+      "confirm": "Rimuovi",
+      "success": "{{name}} non fa più parte della band."
+    },
+    "leave": {
+      "button": "Esci dalla band",
+      "title": "Uscire dalla band?",
+      "text": "Non vedrai più repertorio, live e prove. Potrai rientrare solo con il codice di invito.",
+      "lastText": "Sei l'ultimo membro: uscendo, la band verrà eliminata insieme a repertorio, live e prove.",
+      "confirm": "Esci",
+      "success": "Non fai più parte di «{{name}}»."
+    }
+  },
+  "live": {
+    "title": "Dettaglio live",
+    "back": "Live della band"
   }
 }

@@ -3,7 +3,11 @@
     "name": "Music Band Manager"
   },
   "common": {
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "retry": "Retry"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -31,7 +35,14 @@
     "password": "Password",
     "passwordConfirmation": "Confirm password",
     "newPassword": "New password",
-    "newPasswordConfirmation": "Confirm new password"
+    "newPasswordConfirmation": "Confirm new password",
+    "bandName": "Band name",
+    "genre": "Genre",
+    "instruments": "Your instruments",
+    "inviteCode": "Invite code",
+    "place": "Place",
+    "startsAt": "Date and time",
+    "notes": "Notes"
   },
   "auth": {
     "login": {
@@ -78,8 +89,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Hi, {{name}}!",
-    "placeholder": "Your bands and the calendar of rehearsals and gigs will appear here."
+    "welcome": "Hi, {{name}}!"
   },
   "profile": {
     "title": "Profile",
@@ -156,5 +166,142 @@
         ]
       }
     ]
+  },
+  "instruments": {
+    "help": "Pick a suggestion or type and press Enter (up to 10)",
+    "suggestions": [
+      "Vocals",
+      "Backing vocals",
+      "Electric guitar",
+      "Acoustic guitar",
+      "Bass",
+      "Drums",
+      "Percussion",
+      "Keyboards",
+      "Piano",
+      "Synthesizer",
+      "Violin",
+      "Cello",
+      "Double bass",
+      "Saxophone",
+      "Trumpet",
+      "Trombone",
+      "Flute",
+      "Clarinet",
+      "Harmonica",
+      "Accordion",
+      "Ukulele",
+      "DJ"
+    ]
+  },
+  "bands": {
+    "title": "Your bands",
+    "empty": "You're not in any band yet. Create one or join with the invite code your bandmates gave you.",
+    "loadError": "Could not load your bands.",
+    "membersCount_one": "{{count}} member",
+    "membersCount_other": "{{count}} members",
+    "myInstruments": "Your instruments",
+    "create": {
+      "button": "Create band",
+      "title": "Create a band",
+      "submit": "Create",
+      "success": "Band “{{name}}” created."
+    },
+    "join": {
+      "button": "Join a band",
+      "title": "Join a band",
+      "submit": "Join",
+      "codeHelp": "8 characters, found in the band Members section",
+      "tooManyAttempts": "Too many attempts. Wait a minute and try again.",
+      "success": "You're now a member of “{{name}}”."
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "live": "Live",
+    "rehearsal": "Rehearsal",
+    "empty": "No lives or rehearsals this month.",
+    "error": "Could not load the calendar.",
+    "prev": "Previous month",
+    "next": "Next month",
+    "today": "Go to today",
+    "todayButton": "Today",
+    "month": "Month",
+    "list": "List"
+  },
+  "rehearsal": {
+    "editTitle": "Edit rehearsal",
+    "editTitleBand": "{{band}} rehearsal",
+    "saved": "Rehearsal updated.",
+    "deleted": "Rehearsal deleted.",
+    "delete": {
+      "title": "Delete the rehearsal?",
+      "text": "The rehearsal will be deleted for every band member. This cannot be undone."
+    }
+  },
+  "band": {
+    "back": "Dashboard",
+    "tabsLabel": "Band sections",
+    "tabs": {
+      "members": "Members",
+      "songs": "Repertoire",
+      "lives": "Lives",
+      "rehearsals": "Rehearsals",
+      "chat": "AI chat"
+    },
+    "comingSoon": "This section will be available soon.",
+    "notFound": "This band doesn't exist or you're not a member.",
+    "loadError": "Could not load the band.",
+    "edit": {
+      "button": "Edit",
+      "title": "Edit the band",
+      "success": "Band updated."
+    },
+    "delete": {
+      "button": "Delete band",
+      "title": "Delete the band?",
+      "text": "“{{name}}” will be deleted for every member, along with its repertoire, lives, setlists and rehearsals. This cannot be undone.",
+      "confirm": "Delete band",
+      "success": "Band “{{name}}” deleted."
+    }
+  },
+  "members": {
+    "title": "Members ({{count}})",
+    "me": "{{name}} (you)",
+    "invite": {
+      "title": "Invite code",
+      "help": "Share it with whoever you want to join the band.",
+      "copy": "Copy the invite code",
+      "copied": "Code copied.",
+      "copyError": "Could not copy the code: select it and copy it by hand.",
+      "regenerate": "Regenerate",
+      "regenerateTitle": "Regenerate the code?",
+      "regenerateText": "The current code will stop working and you will need to share the new one. Current members stay in the band.",
+      "regenerated": "New invite code created."
+    },
+    "instruments": {
+      "edit": "Edit instruments",
+      "title": "Your instruments",
+      "saved": "Instruments updated."
+    },
+    "remove": {
+      "button": "Remove {{name}} from the band",
+      "title": "Remove the member?",
+      "text": "{{name}} won't see the band's repertoire, lives and rehearsals anymore. They can only come back with the invite code.",
+      "confirm": "Remove",
+      "success": "{{name}} is no longer in the band."
+    },
+    "leave": {
+      "button": "Leave band",
+      "title": "Leave the band?",
+      "text": "You won't see the repertoire, lives and rehearsals anymore. You can only come back with the invite code.",
+      "lastText": "You're the last member: if you leave, the band will be deleted along with its repertoire, lives and rehearsals.",
+      "confirm": "Leave",
+      "success": "You left “{{name}}”."
+    }
+  },
+  "live": {
+    "title": "Live details",
+    "back": "Band lives"
   }
 }
