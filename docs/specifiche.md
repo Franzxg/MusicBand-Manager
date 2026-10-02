@@ -222,16 +222,42 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 - Il calendario chiede a `GET /calendar` l'intervallo visibile. Su `xs` vista `listMonth`, da `sm` griglia mensile con i pulsanti Mese/Elenco.
 - Colori degli eventi con classi CSS (`event-live`, `event-rehearsal`) e variabili di FullCalendar prese dal tema: live pieno, prova con il solo contorno (anche il pallino nella vista elenco è vuoto). Il titolo inizia con "Live:" o "Prova:", quindi il tipo non dipende solo dal colore. Nella griglia: ora e "Tipo: band"; nell'elenco si aggiunge il luogo.
 - L'evento del calendario non contiene le note della prova: al click il frontend legge `GET /bands/{band}/rehearsals?from=<starts_at>` e cerca la prova per id. Dopo modifica o eliminazione il calendario si ricarica.
-- Click su un live: `/bands/:bandId/lives/:liveId`, segnaposto fino alla fase 7.
+- Click su un live: `/bands/:bandId/lives/:liveId` (Dettaglio Live).
 
 **Dettaglio Band e Membri**
 
-- Tab in `?tab=` (`members`, `songs`, `lives`, `rehearsals`, `chat`; valore assente o sconosciuto: `members`). Repertorio, Live e Prove arrivano nella fase 7, la Chat nella fase 8.
+- Tab in `?tab=` (`members`, `songs`, `lives`, `rehearsals`, `chat`; valore assente o sconosciuto: `members`). La Chat arriva nella fase 8.
 - Band inesistente (404) o di cui non si è membri (403): stesso messaggio, con link alla Dashboard.
 - Strumenti: Autocomplete multiplo con testo libero; i suggerimenti sono in `instruments.suggestions` dei file di lingua. Il testo scritto si aggiunge con Invio o uscendo dal campo; il frontend toglie spazi, doppioni (senza distinguere maiuscole) e oltre 10 valori.
 - Codice di invito: copia con `navigator.clipboard` (in caso di errore una notifica invita a copiarlo a mano); "Rigenera" chiede conferma.
 - Uscire dalla band chiede conferma e, se si è l'ultimo membro, avvisa che la band verrà eliminata; dopo l'uscita si torna alla Dashboard.
 - Finestre comuni: `FormDialog` (form con Annulla e Salva) e `ConfirmDialog` (conferma, rossa per le eliminazioni), entrambe a schermo intero su `xs`.
+
+### Decisioni di implementazione (fase 7)
+
+**Struttura**
+
+- `useApiData(fetcher)` è l'hook comune per leggere dati (caricamento, errore, ricarica); `useBands`, `useBand`, `useSongs` e `useLive` lo usano.
+- `src/songs.js`: stati, formato della durata (`m:ss`, anche oltre l'ora, es. `75:30`) e conversione tra form e body dell'API.
+- `EventDialog` serve sia ai live sia alle prove, in creazione e modifica (sostituisce la finestra della prova della fase 6). Elenchi dei tab Live e Prove con lo stesso componente `EventsTab`.
+- `@dnd-kit/sortable` porta con sé `@dnd-kit/utilities`, che non si importa direttamente: lo spostamento del brano trascinato è scritto a mano (solo verticale).
+
+**Repertorio**
+
+- Ricerca per titolo e filtro per stato fatti nel browser: l'API restituisce già tutto il repertorio.
+- Da `md` tabella; sotto righe impilate con titolo, artista, durata e stato, e un dettaglio espandibile con tonalità, BPM, energia, note, Modifica ed Elimina. In tabella le note compaiono sotto il titolo (massimo due righe).
+- Durata in un solo campo `m:ss`: se il formato è sbagliato l'errore compare sotto il campo senza chiamare l'API; gli errori di `duration_seconds` dell'API vanno sotto lo stesso campo.
+- Badge di stato: Chip con icona ed etichetta (da studiare: contorno e cerchio vuoto; in studio: pieno `secondary` con frecce; completata: pieno `primary` con spunta). Con un click apre un menu per il cambio rapido.
+- Stelle dell'energia (MUI Rating) con i colori della palette, impostati nel tema.
+
+**Live, prove e scaletta**
+
+- I tab Live e Prove mostrano solo gli eventi futuri (comportamento di default dell'API). Un nuovo live apre subito la sua pagina; una prova si modifica o elimina nella finestra.
+- Pagina del live: modifica di luogo e data/ora nella finestra; note del live e della scaletta in un riquadro a parte con un solo "Salva".
+- Riordino: maniglia dnd-kit (mouse dopo 5 px, tocco dopo 200 ms, tastiera con Spazio e frecce, annunci per lettori di schermo in it/en) e pulsanti sposta su/giù. L'ordine cambia subito e poi si salva con `PUT /lives/{live}/songs/order`; se l'API risponde con un errore si ricarica il live.
+- Cambio di stato e rimozione di un brano dalla scaletta rileggono il live, così progresso e durata arrivano sempre dall'API. Togliere un brano dalla scaletta non chiede conferma: il brano resta nel repertorio.
+- "Aggiungi brano": finestra con due schede, "Dal repertorio" (Autocomplete dei brani non ancora in scaletta) e "Brano nuovo" (stessi campi del repertorio).
+- "Copia da un altro live": elenco di tutti i live della band, anche passati (`?from=2000-01-01T00:00:00Z`). Se la scaletta non è vuota, la finestra avvisa che verrà sostituita insieme alle sue note e il pulsante diventa "Sostituisci la scaletta": vale come conferma.
 
 ## Backend & API
 
