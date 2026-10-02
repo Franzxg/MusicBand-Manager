@@ -80,6 +80,13 @@ export function createAppTheme(mode) {
       MuiPaper: {
         styleOverrides: { root: { backgroundImage: 'none' } },
       },
+      // Stelle dell'energia con i colori della palette (piene contro solo contorno)
+      MuiRating: {
+        styleOverrides: {
+          iconFilled: { color: dark ? palette.dust : palette.steel },
+          iconEmpty: { color: dark ? alpha(palette.white, 0.6) : palette.dust },
+        },
+      },
       MuiAccordion: {
         styleOverrides: {
           root: dark ? {} : { border: `1px solid ${alpha(palette.dust, 0.5)}` },
