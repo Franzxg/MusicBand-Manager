@@ -57,7 +57,13 @@ class LiveSongController extends Controller
 
     public function replace(ReplaceSetlistRequest $request, Live $live): LiveDetailResource
     {
-        DB::transaction(fn () => $live->songs()->sync($this->positions($request->validated('song_ids'))));
+        DB::transaction(function () use ($request, $live) {
+            $live->songs()->sync($this->positions($request->validated('song_ids')));
+            // Note della scaletta sostituite solo se inviate
+            if ($request->has('setlist_notes')) {
+                $live->update(['setlist_notes' => $request->validated('setlist_notes')]);
+            }
+        });
 
         return LiveController::detail($live);
     }

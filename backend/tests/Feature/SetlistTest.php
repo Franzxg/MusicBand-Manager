@@ -127,9 +127,15 @@ class SetlistTest extends TestCase
 
         $this->assertEquals([$c->id, $b->id], $this->setlistIds());
 
+        // setlist_notes facoltativo: se presente sostituisce le note della scaletta
+        $this->putJson("/api/lives/{$this->live->id}/setlist", ['song_ids' => [$a->id], 'setlist_notes' => 'Apri forte'])
+            ->assertOk()
+            ->assertJsonPath('data.setlist_notes', 'Apri forte');
+
         $this->putJson("/api/lives/{$this->live->id}/setlist", ['song_ids' => []])
             ->assertOk()
-            ->assertJsonPath('data.songs_count', 0);
+            ->assertJsonPath('data.songs_count', 0)
+            ->assertJsonPath('data.setlist_notes', 'Apri forte');
     }
 
     public function test_remove_song_from_setlist_keeps_it_in_repertoire(): void

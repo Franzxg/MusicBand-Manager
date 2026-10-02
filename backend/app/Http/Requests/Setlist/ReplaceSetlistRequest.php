@@ -19,6 +19,7 @@ class ReplaceSetlistRequest extends FormRequest
         return [
             'song_ids' => ['present', 'array'],
             'song_ids.*' => ['integer', 'distinct'],
+            'setlist_notes' => ['sometimes', 'nullable', 'string', 'max:10000'],
         ];
     }
 
