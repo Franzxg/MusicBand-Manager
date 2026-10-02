@@ -226,7 +226,7 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 
 **Dettaglio Band e Membri**
 
-- Tab in `?tab=` (`members`, `songs`, `lives`, `rehearsals`, `chat`; valore assente o sconosciuto: `members`). La Chat arriva nella fase 8.
+- Tab in `?tab=` (`members`, `songs`, `lives`, `rehearsals`, `chat`; valore assente o sconosciuto: `members`). Il tab `chat` mostra `ChatWindow` (fase 8).
 - Band inesistente (404) o di cui non si è membri (403): stesso messaggio, con link alla Dashboard.
 - Strumenti: Autocomplete multiplo con testo libero; i suggerimenti sono in `instruments.suggestions` dei file di lingua. Il testo scritto si aggiunge con Invio o uscendo dal campo; il frontend toglie spazi, doppioni (senza distinguere maiuscole) e oltre 10 valori.
 - Codice di invito: copia con `navigator.clipboard` (in caso di errore una notifica invita a copiarlo a mano); "Rigenera" chiede conferma.
@@ -310,7 +310,7 @@ Laravel espone un'API REST JSON sotto il prefisso `/api`, protetta da token Sanc
 | DELETE | `/api/lives/{live}` | Elimina il live e la sua scaletta |
 | POST | `/api/lives/{live}/songs` | Aggiunge un brano alla scaletta, con `song_id` oppure con i dati di un brano nuovo |
 | PUT | `/api/lives/{live}/songs/order` | Riordina la scaletta con l'elenco ordinato di `song_ids` |
-| PUT | `/api/lives/{live}/setlist` | Sostituisce la scaletta con l'elenco ordinato di `song_ids` (usato per salvare la proposta della chat AI) |
+| PUT | `/api/lives/{live}/setlist` | Sostituisce la scaletta con l'elenco ordinato di `song_ids` e, se inviato, `setlist_notes` (usato per salvare la proposta della chat AI) |
 | DELETE | `/api/lives/{live}/songs/{song}` | Toglie il brano dalla scaletta (resta nel repertorio) |
 | POST | `/api/lives/{live}/copy-setlist` | Copia la scaletta di un altro live della stessa band (`source_live_id`) |
 | GET | `/api/bands/{band}/rehearsals` | Prove della band dalla più vicina (di default solo le future) |
@@ -400,7 +400,7 @@ Scelte non coperte in dettaglio dalle sezioni precedenti, prese durante lo svilu
 - Elenchi di live e prove ordinati per `starts_at`; senza `from` partono da adesso.
 - `POST /lives/{live}/songs` risponde 201 con il dettaglio del live; riordino, sostituzione e copia rispondono 200 con il dettaglio.
 - Brano già in scaletta: 422 su `song_id` (brano del repertorio) o su `title` (brano nuovo). Brano di un'altra band: 422 su `song_id` o `song_ids`.
-- `PUT .../songs/order` deve contenere tutti e soli i brani della scaletta, altrimenti 422 su `song_ids`. `PUT .../setlist` accetta anche un elenco vuoto (svuota la scaletta).
+- `PUT .../songs/order` deve contenere tutti e soli i brani della scaletta, altrimenti 422 su `song_ids`. `PUT .../setlist` accetta anche un elenco vuoto (svuota la scaletta) e `setlist_notes` facoltativo (se assente le note restano invariate).
 - Dopo la rimozione di un brano le `position` non vengono rinumerate (l'ordine resta corretto); un brano non presente in scaletta dà 404.
 - `copy-setlist` dallo stesso live o da un live di un'altra band: 422 su `source_live_id`.
 
@@ -718,7 +718,7 @@ Al primo avvio `ollama-pull` scarica il modello (circa 2 GB): l'app è subito ut
 
 - **backend**: Dockerfile multi-stage, con `composer:2` che installa le dipendenze (anche quelle di sviluppo, per i test) e poi un'immagine PHP 8.3 FPM con l'estensione `pdo_mysql`. Legge la configurazione solo dalle variabili d'ambiente passate da compose, senza file `backend/.env`.
 - **Entrypoint del backend**: se `APP_KEY` è vuota ne genera una per il processo; esegue `php artisan migrate --force`; se `SEED_ON_START=true` e la tabella `users` è vuota esegue i seeder con i dati dimostrativi; infine avvia php-fpm. Parte solo quando `db` è healthy.
-- **nginx (API)**: inoltra tutte le richieste a `backend:9000` con `SCRIPT_FILENAME` fisso su `/var/www/html/public/index.php`, quindi non condivide il codice con il backend. Il CORS è gestito da Laravel. Il timeout di lettura FastCGI è di 180 secondi (con php-fpm e max\_execution\_time in linea), perché la chat AI su CPU può superare il default di 60 secondi.
+- **nginx (API)**: inoltra tutte le richieste a `backend:9000` con `SCRIPT_FILENAME` fisso su `/var/www/html/public/index.php`, quindi non condivide il codice con il backend. Il CORS è gestito da Laravel. Il timeout di lettura FastCGI è di 180 secondi (con php-fpm e max\_execution\_time in linea), perché la chat AI su CPU può superare il default di 60 secondi. nginx risolve l'indirizzo di `backend` all'avvio: se si ricostruisce solo il backend (`docker compose up -d --build backend`) risponde 502 finché non si esegue `docker compose restart nginx` (comportamento visto nella fase 8).
 - **frontend**: Dockerfile multi-stage, con `node` LTS che esegue `npm ci` e `npm run build` e poi `nginx:alpine` che serve i file statici. `VITE_API_URL` è fissata in fase di build: se cambia la porta dell'API serve `docker compose up --build`.
 - **db**: MySQL con database, utente e password presi da `.env`; il volume `db_data` conserva i dati tra un avvio e l'altro.
 - **ollama-pull**: attende che `ollama` sia healthy, esegue `ollama pull` del modello indicato in `OLLAMA_MODEL` e termina (`restart: "no"`). Il volume `ollama_data` conserva i modelli, che restano dopo `docker compose down` ma non dopo `docker compose down -v`.
