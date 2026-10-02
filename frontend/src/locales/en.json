@@ -259,7 +259,6 @@
       "rehearsals": "Rehearsals",
       "chat": "AI chat"
     },
-    "comingSoon": "This section will be available soon.",
     "notFound": "This band doesn't exist or you're not a member.",
     "loadError": "Could not load the band.",
     "edit": {
@@ -441,6 +440,46 @@
       "option_one": "{{date}} · {{place}} ({{count}} song)",
       "option_other": "{{date}} · {{place}} ({{count}} songs)",
       "success": "Setlist copied."
+    }
+  },
+  "chat": {
+    "hint": "Replies come from the local model and can take up to a minute.",
+    "newConversation": "New conversation",
+    "logLabel": "Chat messages",
+    "emptyTitle": "Ask something about your band",
+    "emptyText": "The AI knows the band repertoire, members, lives and rehearsals. It can propose a setlist that you save with one click.",
+    "suggestions": {
+      "setlist": "Propose a 45-minute setlist for the next live",
+      "toStudy": "Which songs do I still have to learn?",
+      "sameKey": "Which songs are in the same key?"
+    },
+    "you": "You",
+    "ai": "AI",
+    "typing": "The AI is typing…",
+    "unavailable": "AI not available. The model may be off or still downloading: please try again shortly.",
+    "tooMany": "Too many requests in a short time. Wait a minute and try again.",
+    "emptyReply": "The AI gave no answer. Try rephrasing the question.",
+    "inputLabel": "Message",
+    "placeholder": "Type a message (Enter to send, Shift+Enter for a new line)",
+    "send": "Send the message",
+    "proposal": {
+      "intro": "Here is a setlist proposal.",
+      "title": "Setlist proposal",
+      "noKey": "key not set",
+      "total": "Total duration: {{duration}}",
+      "notes": "Notes: {{notes}}",
+      "targetLive": "Destination live",
+      "save": "Save as setlist",
+      "discard": "Discard",
+      "discarded": "Proposal discarded.",
+      "saved": "Setlist saved.",
+      "savedIn": "Setlist saved in the live.",
+      "openLive": "Open the live",
+      "noLives": "There are no upcoming lives: create a live to save the setlist.",
+      "replaceTitle": "Replace the setlist?",
+      "replaceText_one": "The live already has a setlist with {{count}} song: it will be replaced by the proposal.",
+      "replaceText_other": "The live already has a setlist with {{count}} songs: it will be replaced by the proposal.",
+      "replaceConfirm": "Replace"
     }
   }
 }

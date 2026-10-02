@@ -259,7 +259,6 @@
       "rehearsals": "Prove",
       "chat": "Chat AI"
     },
-    "comingSoon": "Questa sezione sarà disponibile a breve.",
     "notFound": "Questa band non esiste o non ne fai parte.",
     "loadError": "Impossibile caricare la band.",
     "edit": {
@@ -441,6 +440,46 @@
       "option_one": "{{date}} · {{place}} ({{count}} brano)",
       "option_other": "{{date}} · {{place}} ({{count}} brani)",
       "success": "Scaletta copiata."
+    }
+  },
+  "chat": {
+    "hint": "Le risposte arrivano dal modello locale e possono richiedere fino a un minuto.",
+    "newConversation": "Nuova conversazione",
+    "logLabel": "Messaggi della chat",
+    "emptyTitle": "Chiedi qualcosa sulla tua band",
+    "emptyText": "L'AI conosce repertorio, membri, live e prove della band. Può proporre una scaletta che salvi con un click.",
+    "suggestions": {
+      "setlist": "Proponi una scaletta da 45 minuti per il prossimo live",
+      "toStudy": "Quali brani devo ancora studiare?",
+      "sameKey": "Quali brani sono nella stessa tonalità?"
+    },
+    "you": "Tu",
+    "ai": "AI",
+    "typing": "L'AI sta scrivendo…",
+    "unavailable": "AI non disponibile. Il modello potrebbe essere spento o ancora in download: riprova tra poco.",
+    "tooMany": "Troppe richieste in poco tempo. Attendi un minuto e riprova.",
+    "emptyReply": "L'AI non ha dato una risposta. Prova a riformulare la domanda.",
+    "inputLabel": "Messaggio",
+    "placeholder": "Scrivi un messaggio (Invio per inviare, Maiusc+Invio per andare a capo)",
+    "send": "Invia il messaggio",
+    "proposal": {
+      "intro": "Ecco una proposta di scaletta.",
+      "title": "Proposta di scaletta",
+      "noKey": "tonalità non indicata",
+      "total": "Durata totale: {{duration}}",
+      "notes": "Note: {{notes}}",
+      "targetLive": "Live di destinazione",
+      "save": "Salva come scaletta",
+      "discard": "Scarta",
+      "discarded": "Proposta scartata.",
+      "saved": "Scaletta salvata.",
+      "savedIn": "Scaletta salvata nel live.",
+      "openLive": "Apri il live",
+      "noLives": "Non ci sono live in programma: crea un live per salvare la scaletta.",
+      "replaceTitle": "Sostituire la scaletta?",
+      "replaceText_one": "Il live ha già una scaletta con {{count}} brano: verrà sostituita dalla proposta.",
+      "replaceText_other": "Il live ha già una scaletta con {{count}} brani: verrà sostituita dalla proposta.",
+      "replaceConfirm": "Sostituisci"
     }
   }
 }

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link as RouterLink, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { deleteBand } from '../api/bands'
+import ChatWindow from '../components/ChatWindow'
 import ConfirmDialog from '../components/ConfirmDialog'
 import EditBandDialog from '../components/EditBandDialog'
 import EventsTab from '../components/EventsTab'
@@ -122,7 +123,7 @@ export default function BandPage() {
         {tab === 'songs' && <SongsTab bandId={band.id} />}
         {tab === 'lives' && <EventsTab key="live" kind="live" bandId={band.id} />}
         {tab === 'rehearsals' && <EventsTab key="rehearsal" kind="rehearsal" bandId={band.id} />}
-        {tab === 'chat' && <Typography color="text.secondary">{t('band.comingSoon')}</Typography>}
+        {tab === 'chat' && <ChatWindow bandId={band.id} />}
       </Box>
 
       {editing && (

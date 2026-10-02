@@ -24,3 +24,9 @@ export const removeLiveSong = (liveId, songId) => client.delete(`/lives/${liveId
 
 export const copySetlist = (liveId, sourceLiveId) =>
   client.post(`/lives/${liveId}/copy-setlist`, { source_live_id: sourceLiveId }).then(unwrap)
+
+// Sostituisce la scaletta (proposta della chat AI); setlistNotes facoltativo
+export const replaceSetlist = (liveId, songIds, setlistNotes) =>
+  client
+    .put(`/lives/${liveId}/setlist`, { song_ids: songIds, ...(setlistNotes ? { setlist_notes: setlistNotes } : {}) })
+    .then(unwrap)
