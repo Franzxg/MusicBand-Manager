@@ -44,10 +44,17 @@ export function createAppTheme(mode) {
       // Target tattili di almeno 44 px
       MuiButton: {
         styleOverrides: {
-          root: { minHeight: 44 },
-          // #778DA9 come testo sulle superfici scure non raggiunge 4.5:1: i pulsanti di testo restano bianchi
-          text: dark ? { color: palette.white } : {},
-          outlined: dark ? { color: palette.white, borderColor: palette.dust } : {},
+          root: {
+            minHeight: 44,
+            // #778DA9 come testo sulle superfici scure non raggiunge 4.5:1: i pulsanti di testo restano bianchi
+            // (solo colore primary: i pulsanti di errore restano rossi)
+            variants: dark
+              ? [
+                  { props: { variant: 'text', color: 'primary' }, style: { color: palette.white } },
+                  { props: { variant: 'outlined', color: 'primary' }, style: { color: palette.white, borderColor: palette.dust } },
+                ]
+              : [],
+          },
         },
       },
       MuiIconButton: {
