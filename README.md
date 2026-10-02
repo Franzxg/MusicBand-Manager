@@ -21,4 +21,6 @@ docker compose up --build
 - Email di test (Mailpit): <http://localhost:8025>
 
 Al primo avvio il backend esegue le migrazioni e, con `SEED_ON_START=true`, crea i dati dimostrativi.
+Account demo: `demo1@example.com` e `demo2@example.com`, password `password123`.
+Per ripristinarli: `docker compose exec backend php artisan migrate:fresh --seed`.
 Su un PC con poca RAM lascia `COMPOSE_PROFILES=` vuoto nel `.env` per non avviare Ollama.
