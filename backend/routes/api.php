@@ -3,8 +3,13 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BandController;
 use App\Http\Controllers\Api\BandMemberController;
+use App\Http\Controllers\Api\CalendarController;
+use App\Http\Controllers\Api\LiveController;
+use App\Http\Controllers\Api\LiveSongController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RehearsalController;
+use App\Http\Controllers\Api\SongController;
 use Illuminate\Support\Facades\Route;
 
 // Rotte pubbliche
@@ -30,4 +35,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bands/{band}/invite-code', [BandController::class, 'regenerateInviteCode']);
     Route::put('/bands/{band}/me/instruments', [BandMemberController::class, 'updateMyInstruments']);
     Route::delete('/bands/{band}/members/{user}', [BandMemberController::class, 'destroy']);
+
+    Route::get('/bands/{band}/songs', [SongController::class, 'index']);
+    Route::post('/bands/{band}/songs', [SongController::class, 'store']);
+    Route::patch('/songs/{song}', [SongController::class, 'update']);
+    Route::delete('/songs/{song}', [SongController::class, 'destroy']);
+
+    Route::get('/bands/{band}/lives', [LiveController::class, 'index']);
+    Route::post('/bands/{band}/lives', [LiveController::class, 'store']);
+    Route::get('/lives/{live}', [LiveController::class, 'show']);
+    Route::patch('/lives/{live}', [LiveController::class, 'update']);
+    Route::delete('/lives/{live}', [LiveController::class, 'destroy']);
+
+    Route::post('/lives/{live}/songs', [LiveSongController::class, 'store']);
+    Route::put('/lives/{live}/songs/order', [LiveSongController::class, 'order']);
+    Route::put('/lives/{live}/setlist', [LiveSongController::class, 'replace']);
+    Route::delete('/lives/{live}/songs/{song}', [LiveSongController::class, 'destroy']);
+    Route::post('/lives/{live}/copy-setlist', [LiveSongController::class, 'copy']);
+
+    Route::get('/bands/{band}/rehearsals', [RehearsalController::class, 'index']);
+    Route::post('/bands/{band}/rehearsals', [RehearsalController::class, 'store']);
+    Route::patch('/rehearsals/{rehearsal}', [RehearsalController::class, 'update']);
+    Route::delete('/rehearsals/{rehearsal}', [RehearsalController::class, 'destroy']);
+
+    Route::get('/calendar', CalendarController::class);
 });

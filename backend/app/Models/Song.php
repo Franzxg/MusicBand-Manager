@@ -37,4 +37,15 @@ class Song extends Model
             ->withPivot('id', 'position')
             ->withTimestamps();
     }
+
+    // Brano con la stessa chiave (band, titolo, artista, versione), maiuscole ignorate
+    public static function findDuplicate(int $bandId, string $title, string $artist, string $version, ?int $exceptId = null): ?self
+    {
+        return self::where('band_id', $bandId)
+            ->whereRaw('LOWER(title) = ?', [mb_strtolower($title)])
+            ->whereRaw('LOWER(artist) = ?', [mb_strtolower($artist)])
+            ->whereRaw('LOWER(version) = ?', [mb_strtolower($version)])
+            ->when($exceptId, fn ($query) => $query->whereKeyNot($exceptId))
+            ->first();
+    }
 }
