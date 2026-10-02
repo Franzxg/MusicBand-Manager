@@ -8,7 +8,9 @@ import { Link as RouterLink, useNavigate, useParams, useSearchParams } from 'rea
 import { deleteBand } from '../api/bands'
 import ConfirmDialog from '../components/ConfirmDialog'
 import EditBandDialog from '../components/EditBandDialog'
+import EventsTab from '../components/EventsTab'
 import MembersTab from '../components/MembersTab'
+import SongsTab from '../components/SongsTab'
 import useApiErrorHandler from '../hooks/useApiErrorHandler'
 import useBand from '../hooks/useBand'
 import useNotification from '../hooks/useNotification'
@@ -116,11 +118,11 @@ export default function BandPage() {
       </Tabs>
 
       <Box role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
-        {tab === 'members' ? (
-          <MembersTab band={band} setBand={setBand} />
-        ) : (
-          <Typography color="text.secondary">{t('band.comingSoon')}</Typography>
-        )}
+        {tab === 'members' && <MembersTab band={band} setBand={setBand} />}
+        {tab === 'songs' && <SongsTab bandId={band.id} />}
+        {tab === 'lives' && <EventsTab key="live" kind="live" bandId={band.id} />}
+        {tab === 'rehearsals' && <EventsTab key="rehearsal" kind="rehearsal" bandId={band.id} />}
+        {tab === 'chat' && <Typography color="text.secondary">{t('band.comingSoon')}</Typography>}
       </Box>
 
       {editing && (

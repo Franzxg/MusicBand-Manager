@@ -7,7 +7,9 @@
     "cancel": "Annulla",
     "save": "Salva",
     "delete": "Elimina",
-    "retry": "Riprova"
+    "retry": "Riprova",
+    "edit": "Modifica",
+    "actions": "Azioni"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -237,7 +239,15 @@
     "delete": {
       "title": "Eliminare la prova?",
       "text": "La prova verrà eliminata per tutti i membri della band. L'operazione non si può annullare."
-    }
+    },
+    "upcoming": "Prove in programma",
+    "add": "Aggiungi prova",
+    "addFirst": "Aggiungi la prima prova",
+    "emptyList": "Nessuna prova in programma.",
+    "loadError": "Impossibile caricare le prove.",
+    "createTitle": "Nuova prova",
+    "createTitleBand": "Nuova prova di {{band}}",
+    "created": "Prova aggiunta."
   },
   "band": {
     "back": "Dashboard",
@@ -301,7 +311,136 @@
     }
   },
   "live": {
-    "title": "Dettaglio live",
-    "back": "Live della band"
+    "back": "Live di {{band}}",
+    "upcoming": "Live in programma",
+    "add": "Aggiungi live",
+    "addFirst": "Aggiungi il primo live",
+    "emptyList": "Nessun live in programma.",
+    "loadError": "Impossibile caricare i live.",
+    "notFound": "Questo live non esiste o non fai parte della band.",
+    "createTitle": "Nuovo live",
+    "createTitleBand": "Nuovo live di {{band}}",
+    "editTitle": "Modifica live",
+    "editTitleBand": "Live di {{band}}",
+    "created": "Live creato. Ora puoi costruire la scaletta.",
+    "saved": "Live aggiornato.",
+    "deleted": "Live eliminato.",
+    "summary_one": "{{count}} brano · {{duration}} · {{progress}}% completato",
+    "summary_other": "{{count}} brani · {{duration}} · {{progress}}% completato",
+    "notesTitle": "Note",
+    "notes": "Note del live",
+    "notesHelp": "Es. orari, soundcheck, contatti",
+    "setlistNotes": "Note della scaletta",
+    "setlistNotesHelp": "Es. bis, passaggi tra i brani",
+    "saveNotes": "Salva le note",
+    "notesSaved": "Note salvate.",
+    "delete": {
+      "button": "Elimina live",
+      "title": "Eliminare il live?",
+      "text": "Il live e la sua scaletta verranno eliminati per tutti i membri; le canzoni restano nel repertorio. L'operazione non si può annullare."
+    }
+  },
+  "songs": {
+    "add": "Aggiungi canzone",
+    "addFirst": "Aggiungi la prima canzone",
+    "createTitle": "Nuova canzone",
+    "editTitle": "Modifica canzone",
+    "created": "«{{title}}» aggiunta al repertorio.",
+    "saved": "«{{title}}» aggiornata.",
+    "edit": "Modifica {{title}}",
+    "search": "Cerca per titolo",
+    "filter": "Stato",
+    "count": "{{count}} di {{total}} canzoni",
+    "emptyList": "Il repertorio è vuoto.",
+    "noResults": "Nessuna canzone corrisponde alla ricerca.",
+    "loadError": "Impossibile caricare il repertorio.",
+    "empty": "—",
+    "openLink": "Apri il link di {{title}} (nuova scheda)",
+    "showDetails": "Mostra i dettagli di {{title}}",
+    "hideDetails": "Nascondi i dettagli di {{title}}",
+    "energyLabel_one": "Energia {{count}} su 5",
+    "energyLabel_other": "Energia {{count}} su 5",
+    "status": {
+      "all": "Tutti gli stati",
+      "to_study": "Da studiare",
+      "studying": "In studio",
+      "completed": "Completata",
+      "change": "Stato: {{status}}. Cambia stato"
+    },
+    "fields": {
+      "title": "Titolo",
+      "artist": "Artista",
+      "version": "Versione",
+      "versionHelp": "Facoltativa, es. acustica o live 2024",
+      "duration": "Durata",
+      "durationHelp": "Minuti e secondi, es. 3:45",
+      "durationInvalid": "Scrivi la durata come minuti:secondi, es. 3:45.",
+      "key": "Tonalità",
+      "keyHelp": "Es. Am, C#",
+      "bpm": "BPM",
+      "bpmHelp": "Da 30 a 300",
+      "energy": "Energia",
+      "energyHelp": "Facoltativa, da 1 a 5: aiuta la chat a proporre scalette",
+      "link": "Link",
+      "linkHelp": "Facoltativo, indirizzo http o https (Spotify, YouTube…)",
+      "status": "Stato"
+    },
+    "delete": {
+      "button": "Elimina {{title}}",
+      "title": "Eliminare la canzone?",
+      "text": "«{{title}}» verrà eliminata dal repertorio e sparirà anche da tutte le scalette dei live.",
+      "success": "«{{title}}» eliminata."
+    }
+  },
+  "setlist": {
+    "title": "Scaletta",
+    "summary": "Riepilogo della scaletta",
+    "progress": "{{percent}}% dei brani completati",
+    "totalDuration": "Durata totale",
+    "songsCount": "Brani",
+    "empty": "La scaletta è vuota.",
+    "addFirst": "Aggiungi il primo brano",
+    "reorderHelp": "Riordina trascinando la maniglia (anche da tastiera: Spazio, frecce, Spazio) oppure con i pulsanti su e giù.",
+    "dragHandle": "Sposta {{title}}",
+    "moveUp": "Sposta su {{title}}",
+    "moveDown": "Sposta giù {{title}}",
+    "remove": "Togli {{title}} dalla scaletta",
+    "removed": "«{{title}}» tolta dalla scaletta.",
+    "added": "Brano aggiunto alla scaletta.",
+    "a11y": {
+      "instructions": "Premi Spazio per prendere il brano, usa le frecce su e giù per spostarlo, Spazio per lasciarlo o Esc per annullare.",
+      "start": "Hai preso {{title}}, in posizione {{position}}.",
+      "over": "{{title}} è ora sopra la posizione {{position}}.",
+      "end": "{{title}} lasciato in posizione {{position}}.",
+      "cancel": "Spostamento di {{title}} annullato."
+    },
+    "add": {
+      "button": "Aggiungi brano",
+      "title": "Aggiungi un brano alla scaletta",
+      "submit": "Aggiungi",
+      "modeLabel": "Tipo di brano",
+      "fromRepertoire": "Dal repertorio",
+      "newSong": "Brano nuovo",
+      "song": "Brano",
+      "songHelp": "Cerca per titolo o artista",
+      "chooseSong": "Scegli un brano.",
+      "noOptions": "Nessun brano disponibile",
+      "allAdded": "Tutti i brani del repertorio sono già in scaletta: puoi inserirne uno nuovo.",
+      "emptyRepertoire": "Il repertorio è vuoto: inserisci un brano nuovo, verrà salvato anche nel repertorio."
+    },
+    "copy": {
+      "button": "Copia da un altro live",
+      "title": "Copia la scaletta da un altro live",
+      "source": "Live da cui copiare",
+      "submit": "Copia",
+      "replace": "Sostituisci la scaletta",
+      "chooseLive": "Scegli un live.",
+      "noLives": "La band non ha altri live da cui copiare.",
+      "warning_one": "La scaletta attuale ({{count}} brano) e le sue note verranno sostituite.",
+      "warning_other": "La scaletta attuale ({{count}} brani) e le sue note verranno sostituite.",
+      "option_one": "{{date}} · {{place}} ({{count}} brano)",
+      "option_other": "{{date}} · {{place}} ({{count}} brani)",
+      "success": "Scaletta copiata."
+    }
   }
 }

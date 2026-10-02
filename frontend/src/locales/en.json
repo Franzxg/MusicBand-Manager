@@ -7,7 +7,9 @@
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
-    "retry": "Retry"
+    "retry": "Retry",
+    "edit": "Edit",
+    "actions": "Actions"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -237,7 +239,15 @@
     "delete": {
       "title": "Delete the rehearsal?",
       "text": "The rehearsal will be deleted for every band member. This cannot be undone."
-    }
+    },
+    "upcoming": "Upcoming rehearsals",
+    "add": "Add rehearsal",
+    "addFirst": "Add the first rehearsal",
+    "emptyList": "No upcoming rehearsals.",
+    "loadError": "Could not load the rehearsals.",
+    "createTitle": "New rehearsal",
+    "createTitleBand": "New {{band}} rehearsal",
+    "created": "Rehearsal added."
   },
   "band": {
     "back": "Dashboard",
@@ -301,7 +311,136 @@
     }
   },
   "live": {
-    "title": "Live details",
-    "back": "Band lives"
+    "back": "{{band}} lives",
+    "upcoming": "Upcoming lives",
+    "add": "Add live",
+    "addFirst": "Add the first live",
+    "emptyList": "No upcoming lives.",
+    "loadError": "Could not load the lives.",
+    "notFound": "This live doesn't exist or you're not in the band.",
+    "createTitle": "New live",
+    "createTitleBand": "New {{band}} live",
+    "editTitle": "Edit live",
+    "editTitleBand": "{{band}} live",
+    "created": "Live created. Now you can build the setlist.",
+    "saved": "Live updated.",
+    "deleted": "Live deleted.",
+    "summary_one": "{{count}} song · {{duration}} · {{progress}}% completed",
+    "summary_other": "{{count}} songs · {{duration}} · {{progress}}% completed",
+    "notesTitle": "Notes",
+    "notes": "Live notes",
+    "notesHelp": "E.g. times, soundcheck, contacts",
+    "setlistNotes": "Setlist notes",
+    "setlistNotesHelp": "E.g. encores, transitions between songs",
+    "saveNotes": "Save notes",
+    "notesSaved": "Notes saved.",
+    "delete": {
+      "button": "Delete live",
+      "title": "Delete the live?",
+      "text": "The live and its setlist will be deleted for every member; the songs stay in the repertoire. This cannot be undone."
+    }
+  },
+  "songs": {
+    "add": "Add song",
+    "addFirst": "Add the first song",
+    "createTitle": "New song",
+    "editTitle": "Edit song",
+    "created": "“{{title}}” added to the repertoire.",
+    "saved": "“{{title}}” updated.",
+    "edit": "Edit {{title}}",
+    "search": "Search by title",
+    "filter": "Status",
+    "count": "{{count}} of {{total}} songs",
+    "emptyList": "The repertoire is empty.",
+    "noResults": "No songs match your search.",
+    "loadError": "Could not load the repertoire.",
+    "empty": "—",
+    "openLink": "Open the link for {{title}} (new tab)",
+    "showDetails": "Show details of {{title}}",
+    "hideDetails": "Hide details of {{title}}",
+    "energyLabel_one": "Energy {{count}} out of 5",
+    "energyLabel_other": "Energy {{count}} out of 5",
+    "status": {
+      "all": "All statuses",
+      "to_study": "To study",
+      "studying": "Studying",
+      "completed": "Completed",
+      "change": "Status: {{status}}. Change status"
+    },
+    "fields": {
+      "title": "Title",
+      "artist": "Artist",
+      "version": "Version",
+      "versionHelp": "Optional, e.g. acoustic or live 2024",
+      "duration": "Duration",
+      "durationHelp": "Minutes and seconds, e.g. 3:45",
+      "durationInvalid": "Write the duration as minutes:seconds, e.g. 3:45.",
+      "key": "Key",
+      "keyHelp": "E.g. Am, C#",
+      "bpm": "BPM",
+      "bpmHelp": "From 30 to 300",
+      "energy": "Energy",
+      "energyHelp": "Optional, 1 to 5: helps the chat suggest setlists",
+      "link": "Link",
+      "linkHelp": "Optional, http or https address (Spotify, YouTube…)",
+      "status": "Status"
+    },
+    "delete": {
+      "button": "Delete {{title}}",
+      "title": "Delete the song?",
+      "text": "“{{title}}” will be deleted from the repertoire and removed from every live setlist.",
+      "success": "“{{title}}” deleted."
+    }
+  },
+  "setlist": {
+    "title": "Setlist",
+    "summary": "Setlist summary",
+    "progress": "{{percent}}% of songs completed",
+    "totalDuration": "Total duration",
+    "songsCount": "Songs",
+    "empty": "The setlist is empty.",
+    "addFirst": "Add the first song",
+    "reorderHelp": "Reorder by dragging the handle (keyboard too: Space, arrows, Space) or with the up and down buttons.",
+    "dragHandle": "Move {{title}}",
+    "moveUp": "Move {{title}} up",
+    "moveDown": "Move {{title}} down",
+    "remove": "Remove {{title}} from the setlist",
+    "removed": "“{{title}}” removed from the setlist.",
+    "added": "Song added to the setlist.",
+    "a11y": {
+      "instructions": "Press Space to pick up the song, use the up and down arrows to move it, Space to drop it or Escape to cancel.",
+      "start": "Picked up {{title}}, at position {{position}}.",
+      "over": "{{title}} is now over position {{position}}.",
+      "end": "{{title}} dropped at position {{position}}.",
+      "cancel": "Moving {{title}} was cancelled."
+    },
+    "add": {
+      "button": "Add song",
+      "title": "Add a song to the setlist",
+      "submit": "Add",
+      "modeLabel": "Song type",
+      "fromRepertoire": "From repertoire",
+      "newSong": "New song",
+      "song": "Song",
+      "songHelp": "Search by title or artist",
+      "chooseSong": "Choose a song.",
+      "noOptions": "No songs available",
+      "allAdded": "Every repertoire song is already in the setlist: you can add a new one.",
+      "emptyRepertoire": "The repertoire is empty: add a new song, it will be saved to the repertoire too."
+    },
+    "copy": {
+      "button": "Copy from another live",
+      "title": "Copy the setlist from another live",
+      "source": "Live to copy from",
+      "submit": "Copy",
+      "replace": "Replace the setlist",
+      "chooseLive": "Choose a live.",
+      "noLives": "The band has no other lives to copy from.",
+      "warning_one": "The current setlist ({{count}} song) and its notes will be replaced.",
+      "warning_other": "The current setlist ({{count}} songs) and its notes will be replaced.",
+      "option_one": "{{date}} · {{place}} ({{count}} song)",
+      "option_other": "{{date}} · {{place}} ({{count}} songs)",
+      "success": "Setlist copied."
+    }
   }
 }

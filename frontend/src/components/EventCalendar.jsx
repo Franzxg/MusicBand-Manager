@@ -14,7 +14,7 @@ import { getRehearsals } from '../api/rehearsals'
 import useApiErrorHandler from '../hooks/useApiErrorHandler'
 import useLanguage from '../hooks/useLanguage'
 import useNotification from '../hooks/useNotification'
-import RehearsalDialog from './RehearsalDialog'
+import EventDialog from './EventDialog'
 
 // Calendario aggregato di live (pieni) e prove (contorno) di tutte le band dell'utente
 export default function EventCalendar() {
@@ -180,8 +180,9 @@ export default function EventCalendar() {
         />
       </Box>
       {rehearsal && (
-        <RehearsalDialog
-          rehearsal={rehearsal}
+        <EventDialog
+          kind="rehearsal"
+          event={rehearsal}
           bandName={rehearsal.bandName}
           onClose={() => closeRehearsal()}
           onSaved={() => closeRehearsal(t('rehearsal.saved'))}
