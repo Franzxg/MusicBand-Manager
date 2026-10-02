@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BandController;
 use App\Http\Controllers\Api\BandMemberController;
 use App\Http\Controllers\Api\CalendarController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\LiveController;
 use App\Http\Controllers\Api\LiveSongController;
 use App\Http\Controllers\Api\PasswordResetController;
@@ -59,4 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/rehearsals/{rehearsal}', [RehearsalController::class, 'destroy']);
 
     Route::get('/calendar', CalendarController::class);
+
+    Route::post('/bands/{band}/chat', ChatController::class)->middleware('throttle:chat');
 });
