@@ -272,12 +272,12 @@ Tutti gli endpoint, con corpo delle richieste ed esempi di risposta, sono in [`d
 ## API, Postman e test
 
 - **Documentazione**: [`docs/API.md`](docs/API.md) contiene esempi reali di richiesta e risposta per ogni endpoint. Base URL: `http://localhost:8000/api`.
-- **Collection Postman**: in Postman scegli **Import** e seleziona i due file in [`docs/postman/`](docs/postman/), cioè `rehearsal-setlist-manager.postman_collection.json` e `local.postman_environment.json`. Poi attiva l'environment "Music Band Manager - locale".
+- **Collection Postman**: in Postman scegli **Import** e seleziona i due file in [`docs/postman/`](docs/postman/), cioè `music-band-manager.postman_collection.json` e `local.postman_environment.json`. Poi attiva l'environment "Music Band Manager - locale".
 - **Ordine**: esegui la collection dall'inizio, ad esempio con il **Collection Runner**. La prima richiesta registra un utente nuovo con un'email sempre diversa. Gli script salvano da soli token e id nell'environment, e il token viene inviato come Bearer da tutte le richieste protette. Le ultime richieste eliminano gli account creati.
 - **Da terminale**, con Node installato:
 
   ```bash
-  npx newman run docs/postman/rehearsal-setlist-manager.postman_collection.json -e docs/postman/local.postman_environment.json
+  npx newman run docs/postman/music-band-manager.postman_collection.json -e docs/postman/local.postman_environment.json
   ```
 
 - Se cambi `API_PORT`, aggiorna `baseUrl` nell'environment.

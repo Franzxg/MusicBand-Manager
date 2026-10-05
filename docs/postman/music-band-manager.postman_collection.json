@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Rehearsal & Setlist Manager",
+    "name": "Music Band Manager",
     "description": "API di Music Band Manager. Esegui le cartelle in ordine (Collection Runner): la registrazione crea un utente nuovo, le richieste di creazione salvano gli id e le ultime due richieste eliminano gli account creati. Esempi completi in docs/API.md.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },

@@ -74,7 +74,7 @@ Consegna: **martedì 6 ottobre 2026, ore 23:59:59**. Il piano prevede 3 giorni d
 - **Leggi**: "Backend & API" (Endpoint, Collection Postman).
 - **Fai**:
   - `docs/API.md` con richiesta e risposta di esempio di ogni endpoint (risposte reali ottenute dall'API, non inventate). Il frontend si baserà su questo file.
-  - `docs/postman/rehearsal-setlist-manager.postman_collection.json` e `docs/postman/local.postman_environment.json`, come da specifiche (token e id salvati dagli script, test di base).
+  - `docs/postman/music-band-manager.postman_collection.json` e `docs/postman/local.postman_environment.json`, come da specifiche (token e id salvati dagli script, test di base).
   - Se possibile, verifica la collection con `npx newman run`.
   - La richiesta della chat si segna come "da completare nella fase 8".
 - **Fatto quando**: ogni endpoint della tabella ha il suo esempio e la sua richiesta Postman.

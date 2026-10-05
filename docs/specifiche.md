@@ -1,10 +1,10 @@
-# Rehearsal & Setlist Manager — Specifiche di progetto
+# Music Band Manager — Specifiche di progetto
 
 Sep 30, 2026
 
 ## Panoramica del progetto
 
-Rehearsal & Setlist Manager è una web app fullstack per band musicali: gestisce membri, repertorio, prove, live e scalette, con un assistente AI (Ollama) integrato per rispondere a domande sul gruppo.
+Music Band Manager è una web app fullstack per band musicali: gestisce membri, repertorio, prove, live e scalette, con un assistente AI (Ollama) integrato per rispondere a domande sul gruppo.
 
 **Stack tecnologico**
 
@@ -451,7 +451,7 @@ Scelte non coperte in dettaglio dalle sezioni precedenti, prese durante lo svilu
 
 Per testare tutti gli endpoint senza il frontend, il repository include una collection Postman.
 
-- **File**: `docs/postman/rehearsal-setlist-manager.postman_collection.json` (formato Collection v2.1) e `docs/postman/local.postman_environment.json`.
+- **File**: `docs/postman/music-band-manager.postman_collection.json` (formato Collection v2.1) e `docs/postman/local.postman_environment.json`.
 - **Contenuto**: una richiesta per ogni endpoint della tabella sopra, raggruppate in cartelle (Auth, Profilo, Band e membri, Repertorio, Live e scaletta, Prove, Calendario, Chat AI), con body di esempio e header `Accept: application/json`.
 - **Variabili**: `baseUrl` (es. `http://localhost:8000/api`; la porta reale è definita nella sezione Docker), `token`, `bandId`, `songId`, `liveId`, `rehearsalId`.
 - **Token automatico**: gli script di test di `register` e `login` salvano il token nella variabile `token`; le altre richieste lo usano con l'autenticazione Bearer ereditata dalla collection.
