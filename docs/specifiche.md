@@ -74,6 +74,7 @@ Intestazione con nome band e pulsante "Elimina band" (con conferma, disponibile 
 ### 5. Profilo utente
 
 - Raggiungibile dal menu utente nella Navbar
+- In alto l'avatar con le iniziali (`UserAvatar`, 72 px) accanto al nome dell'utente; è decorativo perché il nome è già scritto accanto
 - **Dati personali**: modifica di nome ed email
 - **Cambio password**: password attuale + nuova password + conferma
 - **Elimina account**: pulsante con finestra di conferma e inserimento della password; avvisa che le band rimaste senza altri membri verranno eliminate
@@ -117,7 +118,8 @@ Nel form di aggiunta e modifica il link deve essere un URL http(s) valido. Se ti
 - SongRow/SongCard (titolo, tonalità, durata, badge di stato)
 - ProgressBar (mostra la percentuale ricevuta dall'API)
 - ChatWindow (bolle utente/AI, input, invio)
-- Navbar con band corrente, link alla Guida, selettore lingua, interruttore tema chiaro/scuro e logout
+- Navbar con band corrente, link alla Guida, selettore lingua, interruttore tema chiaro/scuro e logout; il menu utente (da `md`) e l'intestazione del cassetto (su `xs`/`sm`) mostrano l'avatar con le iniziali accanto al nome
+- UserAvatar: `Avatar` di MUI con le iniziali della prima e dell'ultima parola del nome (una sola lettera se il nome ha una parola, icona neutra se è vuoto); sfondo scelto in modo deterministico dal nome tra 8 colori ricavati dalla palette (`avatarColors` nel tema), con iniziali prugna e contrasto da 4.7:1 a 9.6:1 nei due temi; `aria-label` tradotto, oppure `aria-hidden` quando è decorativo accanto al nome
 
 ### Note tecniche
 

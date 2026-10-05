@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { deleteMe, updateMe, updatePassword } from '../api/auth'
 import FormDialog from '../components/FormDialog'
+import UserAvatar from '../components/UserAvatar'
 import useApiErrorHandler from '../hooks/useApiErrorHandler'
 import useAuth from '../hooks/useAuth'
 import useNotification from '../hooks/useNotification'
@@ -220,6 +221,12 @@ export default function ProfilePage() {
   return (
     <Stack spacing={3} sx={{ maxWidth: 640 }}>
       <Typography variant="h1">{t('profile.title')}</Typography>
+      <Stack direction="row" spacing={2} sx={{ alignItems: 'center', minWidth: 0 }}>
+        <UserAvatar name={user.name} size={72} decorative />
+        <Typography variant="h2" component="p" sx={{ wordBreak: 'break-word', minWidth: 0 }}>
+          {user.name}
+        </Typography>
+      </Stack>
       <Section id="profile-data" title={t('profile.data.title')}>
         <PersonalDataForm key={user.id} user={user} onSaved={setUser} />
       </Section>

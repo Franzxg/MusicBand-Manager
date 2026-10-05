@@ -506,5 +506,9 @@
       "replaceConfirm": "Replace"
     },
     "interrupted": "The reply did not arrive because you left the page while waiting."
+  },
+  "avatar": {
+    "label": "{{name}}'s avatar",
+    "anonymous": "User avatar"
   }
 }

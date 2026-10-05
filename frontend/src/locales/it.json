@@ -506,5 +506,9 @@
       "replaceConfirm": "Sostituisci"
     },
     "interrupted": "La risposta non è arrivata perché hai lasciato la pagina durante l'attesa."
+  },
+  "avatar": {
+    "label": "Avatar di {{name}}",
+    "anonymous": "Avatar utente"
   }
 }

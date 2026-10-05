@@ -1,4 +1,3 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import DashboardIcon from '@mui/icons-material/Dashboard'
@@ -38,6 +37,7 @@ import useThemeMode from '../hooks/useThemeMode'
 import BrandLink from './BrandLink'
 import LanguageSelect from './LanguageSelect'
 import ThemeToggle from './ThemeToggle'
+import UserAvatar from './UserAvatar'
 
 const links = [
   { to: '/', label: 'nav.dashboard', icon: <DashboardIcon /> },
@@ -135,12 +135,13 @@ export default function Navbar() {
           <ThemeToggle />
           <Button
             color="inherit"
-            startIcon={<AccountCircleIcon />}
             onClick={(event) => setUserAnchor(event.currentTarget)}
             aria-label={t('nav.userMenu')}
             aria-haspopup="menu"
-            sx={{ color: 'inherit', maxWidth: { md: 160, lg: 220 } }}
+            sx={{ color: 'inherit', maxWidth: { md: 180, lg: 240 }, gap: 1 }}
           >
+            {/* Fuori da startIcon, che imporrebbe 20 px di font alle iniziali */}
+            <UserAvatar name={user?.name} size={32} decorative />
             <Typography component="span" noWrap>
               {user?.name ?? ''}
             </Typography>
@@ -163,8 +164,9 @@ export default function Navbar() {
       </Toolbar>
 
       <Drawer open={drawerOpen} onClose={closeDrawer} slotProps={{ paper: { sx: { width: 280, maxWidth: '85vw' } } }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: 1 }}>
-          <Typography component="p" variant="subtitle1" noWrap sx={{ fontWeight: 700 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1 }}>
+          {user && <UserAvatar name={user.name} size={36} decorative />}
+          <Typography component="p" variant="subtitle1" noWrap sx={{ fontWeight: 700, flexGrow: 1, minWidth: 0 }}>
             {user?.name ?? t('app.name')}
           </Typography>
           <IconButton onClick={closeDrawer} aria-label={t('nav.closeMenu')}>

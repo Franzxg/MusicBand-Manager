@@ -11,6 +11,19 @@ export const palette = {
   white: '#FFFFFF',
 }
 
+// Sfondi dell'avatar con le iniziali, uguali nei due temi: con testo prugna il contrasto va da 4.7:1 (arancio) a 9.6:1
+export const avatarColors = [
+  palette.mint,
+  palette.sage,
+  palette.flax,
+  palette.orange,
+  lighten(palette.orange, 0.35),
+  darken(palette.mint, 0.15),
+  darken(palette.flax, 0.12),
+  lighten(palette.plum, 0.6),
+]
+export const avatarTextColor = palette.plum
+
 const fontFamily = '"Atkinson Hyperlegible", system-ui, sans-serif'
 
 // Transizioni brevi e leggere, uguali in tutta l'app
