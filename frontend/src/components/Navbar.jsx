@@ -111,7 +111,7 @@ export default function Navbar() {
             onClick={(event) => setBandAnchor(event.currentTarget)}
             aria-label={currentBand ? t('nav.currentBand', { name: currentBand.name }) : t('nav.bands')}
             aria-haspopup="menu"
-            sx={{ color: 'inherit', maxWidth: 240 }}
+            sx={{ color: 'inherit', maxWidth: { md: 180, lg: 240 } }}
           >
             <Typography component="span" noWrap>
               {currentBand?.name ?? t('nav.bands')}
@@ -139,7 +139,7 @@ export default function Navbar() {
             onClick={(event) => setUserAnchor(event.currentTarget)}
             aria-label={t('nav.userMenu')}
             aria-haspopup="menu"
-            sx={{ color: 'inherit', maxWidth: 220 }}
+            sx={{ color: 'inherit', maxWidth: { md: 160, lg: 220 } }}
           >
             <Typography component="span" noWrap>
               {user?.name ?? ''}
