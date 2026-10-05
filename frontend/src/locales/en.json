@@ -20,7 +20,10 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "userMenu": "User menu",
-    "home": "Go to dashboard"
+    "home": "Go to dashboard",
+    "bands": "Your bands",
+    "currentBand": "Current band: {{name}}. Switch band",
+    "noBands": "No bands"
   },
   "theme": {
     "toDark": "Switch to dark theme",

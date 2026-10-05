@@ -239,7 +239,7 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 
 - `useApiData(fetcher)` è l'hook comune per leggere dati (caricamento, errore, ricarica); `useBands`, `useBand`, `useSongs` e `useLive` lo usano.
 - `formatDateTime` in `src/dates.js` mostra data e ora nel fuso del browser e nella lingua scelta, con il formato dayjs `ddd LL, LT` (es. "mer 14 ottobre 2026, 21:30" / "Wed October 14, 2026, 9:30 PM").
-- La "band corrente" nella Navbar (vedi Componenti riutilizzabili) non è ancora fatta: è rinviata alla fase 9. Il nome della band compare per ora nell'intestazione della pagina della band e nel pulsante "indietro" della pagina del live.
+- La "band corrente" nella Navbar è stata aggiunta nella fase 9 (vedi "Decisioni di implementazione (fase 9)").
 - `src/songs.js`: stati, formato della durata (`m:ss`, anche oltre l'ora, es. `75:30`) e conversione tra form e body dell'API.
 - `EventDialog` serve sia ai live sia alle prove, in creazione e modifica (sostituisce la finestra della prova della fase 6). Elenchi dei tab Live e Prove con lo stesso componente `EventsTab`.
 - `@dnd-kit/sortable` porta con sé `@dnd-kit/utilities`, che non si importa direttamente: lo spostamento del brano trascinato è scritto a mano (solo verticale).
@@ -260,6 +260,11 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 - Cambio di stato e rimozione di un brano dalla scaletta rileggono il live, così progresso e durata arrivano sempre dall'API. Togliere un brano dalla scaletta non chiede conferma: il brano resta nel repertorio.
 - "Aggiungi brano": finestra con due schede, "Dal repertorio" (Autocomplete dei brani non ancora in scaletta) e "Brano nuovo" (stessi campi del repertorio).
 - "Copia da un altro live": elenco di tutti i live della band, anche passati (`?from=2000-01-01T00:00:00Z`). Se la scaletta non è vuota, la finestra avvisa che verrà sostituita insieme alle sue note e il pulsante diventa "Sostituisci la scaletta": vale come conferma.
+
+### Decisioni di implementazione (fase 9)
+
+- **Band corrente**: è la band dell'URL (`/bands/:bandId`, anche nella pagina del live). Da `md` un pulsante della Navbar mostra il suo nome (fuori dalle pagine di una band: "Le tue band") e apre il menu delle band dell'utente; nel cassetto c'è la sezione "Le tue band" con la band corrente evidenziata. L'elenco arriva da `GET /bands` e si rilegge quando un'azione crea, rinomina, elimina o lascia una band (evento `bands:changed` lanciato da `src/api/bands.js`).
+- **Profilo**: tre riquadri (dati personali, cambio password, eliminazione account). Dopo il cambio password i campi si svuotano. L'eliminazione chiede la password in una finestra con il pulsante rosso, poi chiude la sessione locale (i token sono già revocati dall'API) e porta a `/login`.
 
 ## Backend & API
 

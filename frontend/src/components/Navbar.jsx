@@ -2,6 +2,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import GroupsIcon from '@mui/icons-material/Groups'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import LogoutIcon from '@mui/icons-material/Logout'
@@ -25,10 +27,12 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link as RouterLink, useLocation, useMatch, useNavigate } from 'react-router-dom'
+import { BANDS_CHANGED_EVENT } from '../api/bands'
 import useAuth from '../hooks/useAuth'
+import useBands from '../hooks/useBands'
 import useLanguage from '../hooks/useLanguage'
 import useThemeMode from '../hooks/useThemeMode'
 import BrandLink from './BrandLink'
@@ -40,7 +44,7 @@ const links = [
   { to: '/guide', label: 'nav.guide', icon: <HelpOutlineIcon /> },
 ]
 
-// Barra completa da md, cassetto su xs e sm
+// Barra completa da md, cassetto su xs e sm. La band corrente è quella dell'URL (/bands/:bandId)
 export default function Navbar() {
   const { t } = useTranslation()
   const { user, logout } = useAuth()
@@ -50,6 +54,16 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [userAnchor, setUserAnchor] = useState(null)
+  const [bandAnchor, setBandAnchor] = useState(null)
+  const { bands, reload: reloadBands } = useBands()
+  const bandMatch = useMatch('/bands/:bandId/*')
+  const currentBand = bands.find((band) => String(band.id) === bandMatch?.params.bandId)
+
+  // Band create, rinominate, eliminate o lasciate: si rilegge l'elenco
+  useEffect(() => {
+    window.addEventListener(BANDS_CHANGED_EVENT, reloadBands)
+    return () => window.removeEventListener(BANDS_CHANGED_EVENT, reloadBands)
+  }, [reloadBands])
 
   const handleLogout = async () => {
     setDrawerOpen(false)
@@ -90,6 +104,33 @@ export default function Navbar() {
               {t(link.label)}
             </Button>
           ))}
+          <Button
+            color="inherit"
+            startIcon={<GroupsIcon />}
+            endIcon={<ExpandMoreIcon />}
+            onClick={(event) => setBandAnchor(event.currentTarget)}
+            aria-label={currentBand ? t('nav.currentBand', { name: currentBand.name }) : t('nav.bands')}
+            aria-haspopup="menu"
+            sx={{ color: 'inherit', maxWidth: 240 }}
+          >
+            <Typography component="span" noWrap>
+              {currentBand?.name ?? t('nav.bands')}
+            </Typography>
+          </Button>
+          <Menu anchorEl={bandAnchor} open={Boolean(bandAnchor)} onClose={() => setBandAnchor(null)}>
+            {bands.length === 0 && <MenuItem disabled>{t('nav.noBands')}</MenuItem>}
+            {bands.map((band) => (
+              <MenuItem
+                key={band.id}
+                component={RouterLink}
+                to={`/bands/${band.id}`}
+                selected={band.id === currentBand?.id}
+                onClick={() => setBandAnchor(null)}
+              >
+                {band.name}
+              </MenuItem>
+            ))}
+          </Menu>
           <LanguageSelect />
           <ThemeToggle />
           <Button
@@ -150,6 +191,29 @@ export default function Navbar() {
             </ListItemIcon>
             <ListItemText primary={t('nav.profile')} />
           </ListItemButton>
+        </List>
+        <Divider />
+        <List subheader={<ListSubheader disableSticky>{t('nav.bands')}</ListSubheader>}>
+          {bands.length === 0 && (
+            <ListItemButton disabled>
+              <ListItemText primary={t('nav.noBands')} />
+            </ListItemButton>
+          )}
+          {bands.map((band) => (
+            <ListItemButton
+              key={band.id}
+              component={RouterLink}
+              to={`/bands/${band.id}`}
+              selected={band.id === currentBand?.id}
+              aria-current={band.id === currentBand?.id ? 'page' : undefined}
+              onClick={closeDrawer}
+            >
+              <ListItemIcon>
+                <GroupsIcon />
+              </ListItemIcon>
+              <ListItemText primary={band.name} slotProps={{ primary: { noWrap: true } }} />
+            </ListItemButton>
+          ))}
         </List>
         <Divider />
         <List subheader={<ListSubheader disableSticky>{t('language.label')}</ListSubheader>}>
