@@ -133,19 +133,22 @@ Nel form di aggiunta e modifica il link deve essere un URL http(s) valido. Se ti
 **Tema chiaro e scuro**
 
 - Modalità scura di default al primo accesso, senza seguire le impostazioni del sistema. Interruttore nella Navbar; la scelta è salvata nel browser (localStorage).
-- Tema MUI creato con `createTheme` e `ThemeProvider`, in due varianti che usano solo la palette [Coolors](https://coolors.co/0d1b2a-1b263b-415a77-778da9-ffffff) qui sotto.
+- Tema MUI creato con `createTheme` e `ThemeProvider`, in due varianti che usano solo la palette [Coolors](https://coolors.co/bcd8c1-d6dbb2-e3d985-e57a44-422040) qui sotto, con due tonalità derivate (calcolate nel tema con `darken`/`lighten`) e il bianco come colore neutro.
 
 | Colore | Hex | Tema scuro | Tema chiaro |
 | --- | --- | --- | --- |
-| Blu notte | #0D1B2A | Sfondo della pagina | Testo principale |
-| Blu inchiostro | #1B263B | Superfici (card, tab, dialog) | Navbar e intestazioni, con testo bianco |
-| Blu acciaio | #415A77 | Bordi, elementi selezionati, chip "in studio" | Colore primario (bottoni, link), testo secondario |
-| Blu polvere | #778DA9 | Colore primario (bottoni, link), icone, barra di progresso | Bordi, divisori, superfici alternate (con trasparenza) |
-| Bianco | #FFFFFF | Testo principale | Sfondo della pagina e delle card |
+| Verde menta | #BCD8C1 | Giorno di oggi nel calendario (al 15%) | Giorno di oggi nel calendario (al 50%) |
+| Salvia | #D6DBB2 | Testo principale (secondario all'80%) | Sfondo della pagina, schiarito al 60% (#EFF1E0) |
+| Lino | #E3D985 | Colore secondario (chip "in studio", hover dei pulsanti del calendario), stelle | Testo della navbar e sui bottoni pieni |
+| Arancio | #E57A44 | Colore primario (bottoni, link, tab, barra di progresso, live nel calendario) | Colore secondario (chip "in studio") |
+| Prugna | #422040 | Superfici (card, tab, dialog) e navbar; sfondo della pagina scurito al 30% (#2E162D); testo sui bottoni pieni | Colore primario (bottoni, link), testo principale (secondario al 75%), navbar |
+| Bianco (neutro) | #FFFFFF | — | Superfici (card, tab, dialog) |
 
-- **Contrasto**: il testo deve avere almeno 4.5:1 (WCAG AA). #778DA9 su #1B263B è al limite (circa 4.4:1): come testo va usato su #0D1B2A, altrimenti per icone ed elementi grandi.
-- **Stati delle canzoni**: distinti da icona ed etichetta, non solo dal colore, con i toni della palette (da studiare: contorno; in studio: pieno #415A77; completata: pieno con spunta).
-- **Eccezione**: solo per errori e conferme di eliminazione si usa il rosso di errore di MUI, perché la palette non ha un colore semantico.
+- **Contrasto**: il testo deve avere almeno 4.5:1 (WCAG AA). Arancio su prugna 4.8:1 (su #2E162D 5.7:1), salvia su prugna 9.7:1, prugna su bianco 13.9:1, lino su prugna 9.6:1. L'arancio non si usa mai come testo su sfondi chiari (2.9:1 sul bianco).
+- **Superfici senza bordi**: card e riquadri (`Paper` con `variant="outlined"`) non hanno bordo e si distinguono dallo sfondo per il colore; restano solo separatori interni appena visibili (divisore al 12-15% di opacità) e i bordi dei campi di testo e dei pulsanti con contorno, necessari per riconoscerli.
+- **Stati delle canzoni**: distinti da icona ed etichetta, non solo dal colore, con i toni della palette (da studiare: contorno; in studio: pieno nel colore secondario; completata: pieno nel colore primario con spunta).
+- **Transizioni**: leggere e brevi (200 ms) su colori di pulsanti, link, campi, tab e superfici, anche al cambio di tema; le card cliccabili si sollevano di 2 px al passaggio del mouse; pagine e tab compaiono con una dissolvenza di 250 ms (`fadeIn` nel tema). Con `prefers-reduced-motion` le animazioni si spengono.
+- **Eccezione**: solo per errori e conferme di eliminazione si usa il rosso di errore di MUI, perché la palette non ha un colore semantico: `red[300]` nel tema scuro e `red[800]` nel chiaro, per restare sopra 4.5:1 sugli sfondi della palette.
 - I colori sono definiti una volta sola nel tema, senza codici colore sparsi nei componenti.
 
 **Font**
@@ -202,11 +205,11 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 
 **Tema e accessibilità**
 
-- Tema scuro: testo secondario bianco all'80% di opacità; link e pulsanti di testo o con contorno sono bianchi, perché `#778DA9` sulle superfici `#1B263B` non raggiunge 4.5:1. I pulsanti pieni usano `#778DA9` con testo `#0D1B2A`.
-- Tema chiaro: divisori e bordi in `#778DA9` al 50% di opacità; navbar `#1B263B` con testo bianco in entrambi i temi.
+- Tema scuro: sfondo `#2E162D` (prugna scurito), superfici e navbar `#422040`; testo salvia, secondario all'80%. I pulsanti pieni e i link sono arancio, con testo prugna sui pulsanti.
+- Tema chiaro: sfondo `#EFF1E0` (salvia schiarito), superfici bianche, testo e pulsanti prugna; navbar `#422040` con testo `#E3D985` in entrambi i temi.
+- Pulsanti del calendario (FullCalendar): nessun alone dopo il click; da tastiera (`:focus-visible`) compare un contorno di 2 px nel colore primario.
 - Il tema impone un'altezza minima di 44 px a `Button`, `IconButton`, `ListItemButton` e `MenuItem`.
 - La build segnala un bundle sopra i 500 kB (soprattutto MUI): è solo un avviso, accettato.
-- L'override che rende bianchi i pulsanti di testo e con contorno nel tema scuro vale solo per il colore `primary`: i pulsanti `color="error"` restano rossi.
 
 ### Decisioni di implementazione (fase 6)
 

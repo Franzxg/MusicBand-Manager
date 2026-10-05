@@ -166,4 +166,4 @@ Le immagini sono in [`docs/screenshots/`](docs/screenshots/).
 - Atkinson Hyperlegible: <https://www.brailleinstitute.org/freefont/> · pacchetto: <https://fontsource.org/fonts/atkinson-hyperlegible>
 - React: <https://react.dev> · Vite: <https://vite.dev> · react-i18next: <https://react.i18next.com>
 - FullCalendar: <https://fullcalendar.io/docs/react> · dnd-kit: <https://docs.dndkit.com>
-- Docker Compose: <https://docs.docker.com/compose/> · Palette dei colori: <https://coolors.co/0d1b2a-1b263b-415a77-778da9-ffffff>
+- Docker Compose: <https://docs.docker.com/compose/> · Palette dei colori: <https://coolors.co/bcd8c1-d6dbb2-e3d985-e57a44-422040>

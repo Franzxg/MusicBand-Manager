@@ -15,6 +15,7 @@ import SongsTab from '../components/SongsTab'
 import useApiErrorHandler from '../hooks/useApiErrorHandler'
 import useBand from '../hooks/useBand'
 import useNotification from '../hooks/useNotification'
+import { fadeIn } from '../theme/theme'
 
 const TABS = ['members', 'songs', 'lives', 'rehearsals', 'chat']
 
@@ -118,7 +119,7 @@ export default function BandPage() {
         ))}
       </Tabs>
 
-      <Box role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
+      <Box key={tab} role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} sx={fadeIn}>
         {tab === 'members' && <MembersTab band={band} setBand={setBand} />}
         {tab === 'songs' && <SongsTab bandId={band.id} />}
         {tab === 'lives' && <EventsTab key="live" kind="live" bandId={band.id} />}
