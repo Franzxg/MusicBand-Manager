@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { sendChat } from '../api/chat'
 import { isNetworkError } from '../api/errors'
 import { getLives } from '../api/lives'
+import { CHAT_STORAGE_PREFIX } from '../chatStorage'
 import useApiData from '../hooks/useApiData'
 import SetlistProposalCard from './SetlistProposalCard'
 
@@ -22,26 +23,60 @@ function errorText(error, t) {
   return t('errors.generic')
 }
 
-// Chat AI della band: cronologia solo nello stato React (si azzera al refresh o con "Nuova conversazione")
-export default function ChatWindow({ bandId }) {
+function loadMessages(key) {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(key))
+    return Array.isArray(saved) ? saved : []
+  } catch {
+    return []
+  }
+}
+
+// Chat AI della band: la cronologia resta nel sessionStorage della scheda (cambio di tab o di pagina, refresh)
+// e si cancella con "Nuova conversazione", con il logout o chiudendo la scheda. active: tab della chat visibile
+export default function ChatWindow({ bandId, active = true }) {
   const { t } = useTranslation()
+  const storageKey = CHAT_STORAGE_PREFIX + bandId
   // Live futuri: destinazione delle proposte di scaletta
-  const { data: lives, setData: setLives } = useApiData(
+  const {
+    data: lives,
+    setData: setLives,
+    reload: reloadLives,
+  } = useApiData(
     useCallback(() => getLives(bandId), [bandId]),
     [],
   )
   // { role, content, proposal?, proposalState?, savedLiveId? }
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState(() => loadMessages(storageKey))
   const [input, setInput] = useState('')
   const [pending, setPending] = useState(false)
   const [error, setError] = useState(null)
   const listRef = useRef(null)
+  const wasActive = useRef(active)
+
+  useEffect(() => {
+    try {
+      if (messages.length > 0) sessionStorage.setItem(storageKey, JSON.stringify(messages))
+      else sessionStorage.removeItem(storageKey)
+    } catch {
+      // sessionStorage non disponibile: la cronologia resta solo in memoria
+    }
+  }, [messages, storageKey])
+
+  // Tornando sulla chat si rileggono i live (potrebbero essere stati creati nel tab Live)
+  useEffect(() => {
+    if (active && !wasActive.current) reloadLives()
+    wasActive.current = active
+  }, [active, reloadLives])
+
+  // Ultimo messaggio dell'utente senza risposta: la pagina è stata lasciata durante l'attesa
+  const interrupted = !pending && !error && messages.at(-1)?.role === 'user'
 
   // Mostra sempre l'ultimo messaggio
   useEffect(() => {
     const list = listRef.current
     if (list) list.scrollTop = list.scrollHeight
-  }, [messages, pending, error])
+  }, [messages, pending, error, active])
 
   const request = async (history) => {
     setPending(true)
@@ -176,6 +211,20 @@ export default function ChatWindow({ bandId }) {
             <CircularProgress size={20} />
             <Typography color="text.secondary">{t('chat.typing')}</Typography>
           </Stack>
+        )}
+
+        {interrupted && (
+          <Alert
+            severity="warning"
+            sx={{ mt: 2 }}
+            action={
+              <Button color="inherit" onClick={() => request(messages)}>
+                {t('common.retry')}
+              </Button>
+            }
+          >
+            {t('chat.interrupted')}
+          </Alert>
         )}
 
         {error && !pending && (

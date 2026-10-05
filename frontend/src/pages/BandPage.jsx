@@ -33,6 +33,9 @@ export default function BandPage() {
   const [deleting, setDeleting] = useState(false)
 
   const tab = TABS.includes(searchParams.get('tab')) ? searchParams.get('tab') : 'members'
+  // La chat resta montata dopo la prima apertura: cambiando tab non si perde una risposta in arrivo
+  const [chatMounted, setChatMounted] = useState(tab === 'chat')
+  if (tab === 'chat' && !chatMounted) setChatMounted(true)
 
   const remove = async () => {
     setDeleting(true)
@@ -119,13 +122,19 @@ export default function BandPage() {
         ))}
       </Tabs>
 
-      <Box key={tab} role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} sx={fadeIn}>
-        {tab === 'members' && <MembersTab band={band} setBand={setBand} />}
-        {tab === 'songs' && <SongsTab bandId={band.id} />}
-        {tab === 'lives' && <EventsTab key="live" kind="live" bandId={band.id} />}
-        {tab === 'rehearsals' && <EventsTab key="rehearsal" kind="rehearsal" bandId={band.id} />}
-        {tab === 'chat' && <ChatWindow bandId={band.id} />}
-      </Box>
+      {tab !== 'chat' && (
+        <Box key={tab} role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} sx={fadeIn}>
+          {tab === 'members' && <MembersTab band={band} setBand={setBand} />}
+          {tab === 'songs' && <SongsTab bandId={band.id} />}
+          {tab === 'lives' && <EventsTab key="live" kind="live" bandId={band.id} />}
+          {tab === 'rehearsals' && <EventsTab key="rehearsal" kind="rehearsal" bandId={band.id} />}
+        </Box>
+      )}
+      {chatMounted && (
+        <Box role="tabpanel" id="panel-chat" aria-labelledby="tab-chat" hidden={tab !== 'chat'} sx={fadeIn}>
+          <ChatWindow key={band.id} bandId={band.id} active={tab === 'chat'} />
+        </Box>
+      )}
 
       {editing && (
         <EditBandDialog

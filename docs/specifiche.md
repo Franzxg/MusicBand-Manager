@@ -83,7 +83,7 @@ Intestazione con nome band e pulsante "Elimina band" (con conferma, disponibile 
 - **Pagina statica** su `/guide`, pubblica (senza login) e senza chiamate all'API. Ci si arriva dal link "Come funziona" nella pagina di login e dalla Navbar.
 - **Intestazione**: se l'utente è loggato mostra la Navbar, altrimenti solo un'intestazione con selettore lingua, tema e link al login.
 - **Testi** in `it.json` e `en.json`, organizzati in sezioni ad accordion (MUI) con un indice per saltare a una sezione.
-- **Sezioni**: cos'è l'app e a chi serve; iniziare (registrazione, login, creare una band o entrare con il codice di invito); band e membri (strumenti, codice di invito, uscire o rimuovere un membro); repertorio (campi delle canzoni e stati di studio); live e scalette (come si costruisce una scaletta, durata totale e progresso); prove e calendario; chat AI (cosa sa fare e i suoi limiti: modello locale, risposte lente, può sbagliare, cronologia non salvata); profilo, tema chiaro/scuro e lingua.
+- **Sezioni**: cos'è l'app e a chi serve; iniziare (registrazione, login, creare una band o entrare con il codice di invito); band e membri (strumenti, codice di invito, uscire o rimuovere un membro); repertorio (campi delle canzoni e stati di studio); live e scalette (come si costruisce una scaletta, durata totale e progresso); prove e calendario; chat AI (cosa sa fare e i suoi limiti: modello locale, risposte lente, può sbagliare, cronologia non salvata sul server); profilo, tema chiaro/scuro e lingua.
 
 ### Modello "Canzone" mostrato in UI
 
@@ -568,7 +568,7 @@ Vincolo UNIQUE su (`live_id`, `song_id`): un brano compare una sola volta per sc
 
 ## Integrazione AI (Ollama)
 
-La chat AI di ogni band gira su Ollama in locale, con un modello piccolo adatto a un computer con sola CPU. Conosce i dati della band e può proporre una scaletta che l'utente salva con un click. La cronologia non viene salvata: si azzera al refresh e non serve nessuna tabella nel database.
+La chat AI di ogni band gira su Ollama in locale, con un modello piccolo adatto a un computer con sola CPU. Conosce i dati della band e può proporre una scaletta che l'utente salva con un click. La cronologia non viene salvata sul server: resta solo nel browser, nella scheda aperta, e non serve nessuna tabella nel database.
 
 ### Modello e configurazione
 
@@ -646,7 +646,7 @@ Il contesto è costruito a ogni richiesta dal database, in formato compatto (una
 ### Interfaccia (frontend)
 
 - **ChatWindow** nel tab Chat AI: bolle utente e AI, campo di testo (Invio invia, Maiusc+Invio va a capo), indicatore "l'AI sta scrivendo…" durante l'attesa. Nessuno streaming.
-- **Cronologia** solo nello stato React: si azzera al refresh o con il pulsante "Nuova conversazione". A ogni richiesta si inviano gli ultimi 10 messaggi.
+- **Cronologia** nel `sessionStorage` del browser, una per band: resta cambiando tab o pagina e dopo un refresh; si cancella con il pulsante "Nuova conversazione", con il logout o chiudendo la scheda. A ogni richiesta si inviano gli ultimi 10 messaggi.
 - **Suggerimenti** cliccabili nella chat vuota, tradotti in italiano e inglese, ad esempio: "Proponi una scaletta da 45 minuti per il prossimo live", "Quali brani devo ancora studiare?", "Quali brani sono nella stessa tonalità?".
 - **Card della proposta** dentro il messaggio: brani in ordine (titolo, artista, tonalità, durata), durata totale, selettore del live di destinazione (default: il live indicato o il prossimo) e pulsanti "Salva come scaletta" e "Scarta". Se il live ha già una scaletta, una finestra di conferma chiede se sostituirla.
 - **Errori**: con un 503 compare un messaggio tradotto con il pulsante "Riprova"; il messaggio dell'utente resta nella chat.
@@ -659,7 +659,7 @@ Il contesto è costruito a ogni richiesta dal database, in formato compatto (una
 - **Risposta non in JSON** (raro con gli structured outputs): si mostra il testo così com'è, senza proposta.
 - **Errori**: 503 per Ollama irraggiungibile (connessione entro 5 secondi), risposta di errore (es. 404 modello non scaricato) o timeout. OpenRouter usa lo stesso schema con `response_format` di tipo `json_schema`, timeout di 45 secondi (dopo i 120 di Ollama si resta sotto i 180 di nginx e php-fpm) ed è saltato se manca la chiave.
 - **Salvataggio**: `PUT /lives/{live}/setlist` accetta `setlist_notes` facoltativo; se non viene inviato le note restano quelle attuali. Il frontend invia le note solo se la proposta ne ha.
-- **Frontend**: la cronologia vive nello stato di `ChatWindow`, quindi si azzera anche cambiando tab. Il selettore del live di destinazione elenca i live futuri, con il prossimo come default; senza live futuri la card invita a crearne uno. Nessun selettore di `live_id` nella chat: il frontend non lo invia. Con 429 compare un messaggio dedicato ("Troppe richieste"). La risposta vuota dell'AI viene sostituita da un testo tradotto, perché l'API rifiuta messaggi vuoti nella cronologia; i messaggi dell'assistente inviati come cronologia sono troncati a 2000 caratteri.
+- **Frontend**: la cronologia è salvata nel `sessionStorage` con chiave `chat:{bandId}` (`src/chatStorage.js`, cancellate tutte da `clearSession` al logout, a un 401 e all'eliminazione dell'account). Dopo la prima apertura il tab della chat resta montato e viene solo nascosto, così cambiando tab una risposta in arrivo non si perde e al ritorno si rileggono i live futuri. Se si lascia la pagina della band durante l'attesa, al ritorno un avviso "Risposta non arrivata" offre "Riprova". Il selettore del live di destinazione elenca i live futuri, con il prossimo come default; senza live futuri la card invita a crearne uno. Nessun selettore di `live_id` nella chat: il frontend non lo invia. Con 429 compare un messaggio dedicato ("Troppe richieste"). La risposta vuota dell'AI viene sostituita da un testo tradotto, perché l'API rifiuta messaggi vuoti nella cronologia; i messaggi dell'assistente inviati come cronologia sono troncati a 2000 caratteri.
 
 ## Docker & deployment
 

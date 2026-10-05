@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as authApi from '../api/auth'
 import { getToken, setToken, UNAUTHORIZED_EVENT } from '../api/client'
+import { clearChats } from '../chatStorage'
 import { isNetworkError } from '../api/errors'
 import useNotification from '../hooks/useNotification'
 import { AuthContext } from './contexts'
@@ -20,6 +21,7 @@ export default function AuthProvider({ children }) {
 
   const clearSession = useCallback(() => {
     setToken(null)
+    clearChats()
     setTokenState(null)
     setUser(null)
   }, [])

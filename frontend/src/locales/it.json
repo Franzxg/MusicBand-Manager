@@ -178,7 +178,7 @@
         "title": "Chat AI",
         "paragraphs": [
           "La chat conosce il repertorio, i live e le prove della band: puoi chiederle consigli o una proposta di scaletta, che poi puoi salvare in un live.",
-          "Usa un modello che gira sul server, senza servizi esterni: le risposte possono essere lente e a volte sbagliate, quindi controllale sempre. La conversazione non viene salvata."
+          "Usa un modello che gira sul server, senza servizi esterni: le risposte possono essere lente e a volte sbagliate, quindi controllale sempre. La conversazione resta finché non chiudi la scheda del browser, esci o premi \"Nuova conversazione\", e non viene salvata sul server."
         ]
       },
       {
@@ -502,6 +502,7 @@
       "replaceText_one": "Il live ha già una scaletta con {{count}} brano: verrà sostituita dalla proposta.",
       "replaceText_other": "Il live ha già una scaletta con {{count}} brani: verrà sostituita dalla proposta.",
       "replaceConfirm": "Sostituisci"
-    }
+    },
+    "interrupted": "La risposta non è arrivata perché hai lasciato la pagina durante l'attesa."
   }
 }

@@ -178,7 +178,7 @@
         "title": "AI chat",
         "paragraphs": [
           "The chat knows the band's repertoire, gigs and rehearsals: you can ask it for advice or for a setlist proposal, which you can then save to a gig.",
-          "It uses a model running on the server, with no external services: answers can be slow and sometimes wrong, so always check them. The conversation is not saved."
+          "It uses a model running on the server, with no external services: answers can be slow and sometimes wrong, so always check them. The conversation stays until you close the browser tab, log out or press \"New conversation\", and it is never saved on the server."
         ]
       },
       {
@@ -502,6 +502,7 @@
       "replaceText_one": "The live already has a setlist with {{count}} song: it will be replaced by the proposal.",
       "replaceText_other": "The live already has a setlist with {{count}} songs: it will be replaced by the proposal.",
       "replaceConfirm": "Replace"
-    }
+    },
+    "interrupted": "The reply did not arrive because you left the page while waiting."
   }
 }
