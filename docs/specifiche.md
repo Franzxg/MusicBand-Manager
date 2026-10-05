@@ -203,7 +203,7 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 - Con il token presente solo `/login` e `/register` portano alla Dashboard; `/forgot-password` e `/reset-password` restano raggiungibili.
 - Reset password: se il link non ha `token` o `email` la pagina invita a chiederne uno nuovo; un token scaduto o non valido (errore 422 sul campo `email`) compare in un avviso sopra il form, con il link per un nuovo invio; dopo il reset si va al login con una notifica di conferma.
 - Guida e 404 mostrano la Navbar se l'utente è loggato, altrimenti l'intestazione pubblica con lingua, tema e "Accedi".
-- Il Profilo è un segnaposto fino alla fase 9.
+- Il Profilo, segnaposto in questa fase, è stato completato nella fase 9 (vedi "Decisioni di implementazione (fase 9)").
 
 **Tema e accessibilità**
 
