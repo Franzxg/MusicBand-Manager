@@ -95,7 +95,26 @@
   },
   "profile": {
     "title": "Profilo",
-    "placeholder": "Qui potrai modificare i tuoi dati e la password."
+    "data": {
+      "title": "Dati personali",
+      "success": "Dati aggiornati."
+    },
+    "password": {
+      "title": "Cambia password",
+      "current": "Password attuale",
+      "new": "Nuova password",
+      "submit": "Cambia password",
+      "success": "Password cambiata. Le altre sessioni sono state chiuse."
+    },
+    "delete": {
+      "title": "Elimina account",
+      "text": "L'account e i tuoi dati verranno eliminati definitivamente.",
+      "button": "Elimina account",
+      "confirmTitle": "Eliminare l'account?",
+      "warning": "L'operazione non si può annullare. Le band in cui sei l'unico membro verranno eliminate insieme a repertorio, live e prove. Inserisci la password per confermare.",
+      "confirm": "Elimina definitivamente",
+      "success": "Account eliminato."
+    }
   },
   "guide": {
     "title": "Come funziona",

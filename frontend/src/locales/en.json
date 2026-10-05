@@ -95,7 +95,26 @@
   },
   "profile": {
     "title": "Profile",
-    "placeholder": "Here you will be able to edit your details and password."
+    "data": {
+      "title": "Personal details",
+      "success": "Details updated."
+    },
+    "password": {
+      "title": "Change password",
+      "current": "Current password",
+      "new": "New password",
+      "submit": "Change password",
+      "success": "Password changed. Your other sessions have been closed."
+    },
+    "delete": {
+      "title": "Delete account",
+      "text": "Your account and your data will be permanently deleted.",
+      "button": "Delete account",
+      "confirmTitle": "Delete your account?",
+      "warning": "This cannot be undone. Bands where you are the only member will be deleted along with their songs, gigs and rehearsals. Enter your password to confirm.",
+      "confirm": "Delete permanently",
+      "success": "Account deleted."
+    }
   },
   "guide": {
     "title": "How it works",

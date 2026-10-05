@@ -12,3 +12,9 @@ export const forgotPassword = (data) => client.post('/forgot-password', data).th
 export const resetPassword = (data) => client.post('/reset-password', data).then((r) => r.data)
 
 export const getMe = () => client.get('/me').then((r) => r.data.data)
+
+export const updateMe = (data) => client.patch('/me', data).then((r) => r.data.data)
+
+export const updatePassword = (data) => client.put('/me/password', data)
+
+export const deleteMe = (data) => client.delete('/me', { data })
