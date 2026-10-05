@@ -154,7 +154,7 @@
         "title": "Repertorio",
         "paragraphs": [
           "Il repertorio contiene tutte le canzoni del gruppo: titolo, artista, versione (per distinguere, ad esempio, una versione acustica), link, durata, tonalità, energia da 1 a 5, BPM e note.",
-          "Ogni canzone ha uno stato di studio: Da studiare, In studio o Completata. Puoi cambiarlo velocemente dal badge della canzone e cercare o filtrare il repertorio per stato."
+          "Ogni canzone ha uno stato di studio: Da studiare, In studio o Completata. Puoi cambiarlo velocemente dal badge della canzone e cercare o filtrare il repertorio per stato. Sopra l'elenco vedi quante canzoni ci sono e la loro durata totale, anche solo di quelle filtrate."
         ]
       },
       {
@@ -411,7 +411,9 @@
       "title": "Eliminare la canzone?",
       "text": "«{{title}}» verrà eliminata dal repertorio e sparirà anche da tutte le scalette dei live.",
       "success": "«{{title}}» eliminata."
-    }
+    },
+    "totalDuration": "durata totale {{duration}}",
+    "filteredDuration": "durata {{duration}} di {{total}}"
   },
   "setlist": {
     "title": "Scaletta",

@@ -39,6 +39,9 @@ import ConfirmDialog from './ConfirmDialog'
 import SongDialog from './SongDialog'
 import StatusBadge from './StatusBadge'
 
+// Durata complessiva dei brani (il repertorio è già tutto nel browser, come conteggio e filtri)
+const sumDuration = (list) => list.reduce((total, song) => total + song.duration_seconds, 0)
+
 // Link del brano: icona che apre una nuova scheda
 function SongLink({ song }) {
   const { t } = useTranslation()
@@ -349,6 +352,13 @@ export default function SongsTab({ bandId }) {
       {!loading && !error && songs.length > 0 && (
         <Typography variant="body2" color="text.secondary" aria-live="polite">
           {t('songs.count', { count: visible.length, total: songs.length })}
+          {' · '}
+          {visible.length === songs.length
+            ? t('songs.totalDuration', { duration: formatDuration(sumDuration(songs)) })
+            : t('songs.filteredDuration', {
+                duration: formatDuration(sumDuration(visible)),
+                total: formatDuration(sumDuration(songs)),
+              })}
         </Typography>
       )}
       {content}

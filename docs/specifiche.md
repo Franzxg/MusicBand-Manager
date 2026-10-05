@@ -250,6 +250,7 @@ Scelte prese durante lo sviluppo del frontend. Valgono come il resto delle speci
 **Repertorio**
 
 - Ricerca per titolo e filtro per stato fatti nel browser: l'API restituisce già tutto il repertorio.
+- Sopra l'elenco: numero di canzoni e durata totale del repertorio (es. "12 di 12 canzoni · durata totale 52:30"); con un filtro attivo anche la durata dei soli brani visibili ("5 di 12 canzoni · durata 20:33 di 52:30"). La somma si fa nel browser come il conteggio, perché l'elenco è già completo e si aggiorna senza ricaricarlo dopo modifiche ed eliminazioni (la regola "il frontend non ricalcola" vale per durata e progresso della scaletta).
 - Da `md` tabella; sotto righe impilate con titolo, artista, durata e stato, e un dettaglio espandibile con tonalità, BPM, energia, note, Modifica ed Elimina. In tabella le note compaiono sotto il titolo (massimo due righe).
 - Durata in un solo campo `m:ss`: se il formato è sbagliato l'errore compare sotto il campo senza chiamare l'API; gli errori di `duration_seconds` dell'API vanno sotto lo stesso campo.
 - Badge di stato: Chip con icona ed etichetta (da studiare: contorno e cerchio vuoto; in studio: pieno `secondary` con frecce; completata: pieno `primary` con spunta). Con un click apre un menu per il cambio rapido.

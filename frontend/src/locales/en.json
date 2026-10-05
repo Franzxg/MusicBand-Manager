@@ -154,7 +154,7 @@
         "title": "Repertoire",
         "paragraphs": [
           "The repertoire holds all the band's songs: title, artist, version (to tell apart, for example, an acoustic version), link, duration, key, energy from 1 to 5, BPM and notes.",
-          "Each song has a study status: To study, Studying or Completed. You can change it quickly from the song badge and search or filter the repertoire by status."
+          "Each song has a study status: To study, Studying or Completed. You can change it quickly from the song badge and search or filter the repertoire by status. Above the list you can see how many songs there are and their total duration, including for the filtered songs only."
         ]
       },
       {
@@ -411,7 +411,9 @@
       "title": "Delete the song?",
       "text": "“{{title}}” will be deleted from the repertoire and removed from every live setlist.",
       "success": "“{{title}}” deleted."
-    }
+    },
+    "totalDuration": "total duration {{duration}}",
+    "filteredDuration": "duration {{duration}} of {{total}}"
   },
   "setlist": {
     "title": "Setlist",
