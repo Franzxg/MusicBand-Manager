@@ -104,7 +104,7 @@ Node e PHP non servono sul computer: tutto gira nei container.
 ### Primo avvio
 
 ```bash
-git clone <url-del-repository>
+git clone https://github.com/Franzxg/MusicBand-Manager
 cd MusicBand-Manager
 cp .env.example .env
 docker compose up --build
@@ -173,13 +173,101 @@ Dopo `down -v` il prossimo avvio ricrea il database con i dati demo e riscarica 
 
 ## Come provare il sistema
 
-1. **Accedi** su <http://localhost:3000> con `demo1@example.com` / `password123`. La dashboard mostra le due band e il calendario.
-2. **Apri la band** "Le Onde Elettriche": nel tab Membri ci sono il codice di invito e gli strumenti di ogni membro.
-3. **Guarda il repertorio** (tab Repertorio): cambia lo stato di un brano cliccando sul suo badge, prova ricerca e filtro e osserva conteggio e durata totale.
-4. **Costruisci una scaletta**: nel tab Live apri "Festa della Musica, Piazza Grande", aggiungi un brano, riordina trascinando o con i pulsanti su/giù e osserva progresso e durata totale aggiornarsi.
-5. **Calendario**: torna alla dashboard e apri un live o una prova dal calendario.
-6. **Chat AI** (con Ollama attivo): nel tab Chat AI chiedi, ad esempio, una scaletta per il prossimo live e salvala dalla card della proposta.
-7. **Reset della password**: esci, scegli "Password dimenticata" e inserisci `demo2@example.com`. Apri <http://localhost:8025>, leggi l'email e segui il link per impostare una nuova password. Per tornare a `password123` ripristina i dati demo con `migrate:fresh --seed`.
+Tutte le funzionalità si provano dal browser, senza Postman. I passi usano gli [account demo](#account-demo); i nomi tra virgolette sono i testi dei pulsanti nell'interfaccia in italiano.
+
+### Prima di iniziare: due account insieme
+
+Il browser conserva l'accesso nel `localStorage`, che è **condiviso da tutte le schede della stessa finestra**. Se in due schede normali accedi con due account diversi, l'ultimo login sostituisce il primo anche nell'altra scheda: le richieste partono con l'account sbagliato (ad esempio "Unisciti" risponde che sei già membro).
+
+Per provare due account insieme usa **un account per finestra**:
+
+- `demo1@example.com` in una finestra normale;
+- `demo2@example.com`, o un account nuovo, in una **finestra in incognito** (Ctrl+Shift+N in Chrome ed Edge, Ctrl+Shift+P in Firefox), oppure in un altro browser o profilo.
+
+Anche tutte le schede in incognito condividono la stessa memoria: non usare due account in due schede incognito.
+
+Se qualcosa non torna, ripristina i dati demo con `docker compose exec backend php artisan migrate:fresh --seed`.
+
+### Account e profilo
+
+1. **Registrazione**: dalla pagina di login scegli "Non hai un account? Registrati". Con dati non validi (ad esempio una password sotto gli 8 caratteri o un'email già usata) gli errori compaiono sotto i campi.
+2. **Login e logout**: accedi con `demo1@example.com` / `password123`; per uscire usa il menu utente in alto a destra, voce "Esci".
+3. **Password dimenticata**: dalla pagina di login scegli "Password dimenticata?" e inserisci `demo2@example.com`. Apri Mailpit su <http://localhost:8025>, apri l'email e segui il link per scegliere una nuova password. Per tornare a `password123` ripristina i dati demo.
+4. **Profilo** (menu utente, "Profilo"): modifica nome ed email e salva; il nome si aggiorna anche nella Navbar.
+5. **Cambio password**: con lo stesso account aperto in una finestra normale e in una in incognito, cambia la password in una delle due. Alla prossima azione l'altra finestra torna al login con il messaggio "La sessione è scaduta. Accedi di nuovo."
+6. **Eliminazione dell'account**: usa un account di prova, non quelli demo. "Elimina account" chiede la password; le band in cui eri l'unico membro vengono eliminate.
+
+### Band e membri
+
+1. **Dashboard**: con demo1 vedi "Le Onde Elettriche" e "Duo Notturno" e il calendario.
+2. **Crea una band**: "Crea band", con nome, genere e almeno uno strumento. Si apre la pagina della band.
+3. **Codice di invito**: nella band, tab "Membri", copia il codice con l'icona accanto. "Rigenera" crea un codice nuovo e rende inutilizzabile il vecchio.
+4. **Entrare in una band**: nella finestra in incognito, con un altro account, scegli "Unisciti a una band", incolla il codice, indica uno strumento e conferma. Ricarica la pagina della band nella finestra di demo1: il nuovo membro compare nel tab "Membri".
+5. **Errori dell'invito**: un codice inesistente o un utente già membro danno un errore sotto il campo del codice. Dopo 10 tentativi in un minuto compare "Troppi tentativi".
+6. **Strumenti**: nel tab "Membri", "Modifica strumenti" cambia i tuoi strumenti in quella band.
+7. **Modifica ed eliminazione**: "Modifica" nell'intestazione della band cambia nome e genere; "Elimina band" chiede conferma.
+8. **Rimozione e uscita**: l'icona accanto a un altro membro lo rimuove; "Esci dalla band" ti fa uscire. Se esce l'ultimo membro, la band viene eliminata.
+9. **Band corrente**: con la finestra larga, il pulsante con il nome della band nella Navbar apre il menu per passare a un'altra band.
+
+### Repertorio
+
+1. Nella band "Le Onde Elettriche", tab "Repertorio": sopra l'elenco ci sono numero di canzoni e durata totale.
+2. **Aggiungi canzone**: titolo, artista e durata (formato `3:45`) sono obbligatori; versione, tonalità, BPM, energia, link e note sono facoltativi. Una durata scritta male dà un errore sotto il campo.
+3. **Duplicati**: una canzone con lo stesso titolo, artista e versione di una esistente viene rifiutata.
+4. **Stato**: clicca sul badge di un brano (da studiare, in studio, completata) per cambiarlo.
+5. **Ricerca e filtro**: "Cerca per titolo" e "Stato"; la riga sopra l'elenco mostra anche la durata dei soli brani filtrati.
+6. **Modifica ed eliminazione**: icone matita e cestino. L'eliminazione avvisa che il brano sparisce anche dalle scalette.
+
+### Live e scaletta
+
+1. Tab "Live": apri "Festa della Musica, Piazza Grande". In alto ci sono percentuale di brani completati, durata totale e numero di brani.
+2. **Aggiungi brano**: scheda "Dal repertorio" per un brano esistente, oppure "Brano nuovo", che viene salvato anche nel repertorio.
+3. **Riordino**: trascina la maniglia a sinistra del brano, usa i pulsanti su/giù, oppure da tastiera porta il focus sulla maniglia e usa Spazio, frecce, Spazio.
+4. **Progresso**: cambia lo stato di un brano dalla scaletta e osserva la percentuale aggiornarsi.
+5. **Rimozione**: l'icona a destra toglie il brano dalla scaletta senza cancellarlo dal repertorio.
+6. **Note**: note del live e note della scaletta si salvano con "Salva le note".
+7. **Copia**: apri "Pub The Anchor" (scaletta vuota) e usa "Copia da un altro live" scegliendo la Festa della Musica. Se la scaletta di destinazione non è vuota, il pulsante diventa "Sostituisci la scaletta".
+8. **Nuovo live**: dal tab "Live", "Aggiungi live" con luogo e data/ora; si apre subito la sua pagina. "Modifica" ed "Elimina live" sono nell'intestazione.
+
+### Prove e calendario
+
+1. Tab "Prove": "Aggiungi prova" con luogo, data/ora e note. Cliccando una prova si modifica o si elimina.
+2. I tab "Live" e "Prove" mostrano solo gli eventi futuri.
+3. **Calendario** in dashboard: "Mese" ed "Elenco" cambiano vista, le frecce cambiano mese. Un clic su un live apre la sua pagina; un clic su una prova apre la finestra di modifica.
+
+### Chat AI
+
+Serve Ollama attivo e il modello scaricato (vedi [Chat AI con Ollama](#chat-ai-con-ollama)).
+
+1. Nella band, tab "Chat AI": usa uno dei suggerimenti, ad esempio "Proponi una scaletta da 45 minuti per il prossimo live".
+2. La risposta può richiedere decine di secondi. Con una proposta compare una card con brani, durata totale e note.
+3. Scegli il "Live di destinazione" e premi "Salva come scaletta" (o "Scarta"). Se il live ha già una scaletta, viene chiesta conferma prima di sostituirla.
+4. Cambia tab o pagina e torna: la conversazione resta finché non premi "Nuova conversazione", esci o chiudi la scheda.
+5. **Senza Ollama** (`COMPOSE_PROFILES=` vuoto, oppure `docker compose stop ollama`) la chat mostra "AI non disponibile" e il resto dell'app funziona.
+
+### Interfaccia
+
+1. **Tema**: l'icona sole/luna nella Navbar passa dal tema scuro al chiaro; la scelta resta dopo un ricaricamento.
+2. **Lingua**: il selettore "IT"/"EN" nella Navbar (o nella pagina di login) traduce l'interfaccia e anche i messaggi di errore dell'API.
+3. **Smartphone**: negli strumenti per sviluppatori del browser (F12, poi Ctrl+Shift+M) imposta 360 px. La Navbar diventa un menu a cassetto, la dashboard una colonna, il calendario un elenco e il repertorio righe espandibili.
+4. **Guida e 404**: "Guida" nella Navbar spiega le funzioni; un indirizzo inesistente (ad esempio <http://localhost:3000/pagina-inesistente>) mostra la pagina 404.
+
+### API senza Postman
+
+Per una prova veloce dell'API da terminale con `curl` (in PowerShell usa `curl.exe`):
+
+```bash
+# login: la risposta contiene "token"
+curl -X POST http://localhost:8000/api/login \
+  -H "Accept: application/json" -H "Content-Type: application/json" \
+  -d '{"email":"demo1@example.com","password":"password123"}'
+
+# richiesta protetta: sostituisci TOKEN con il valore ricevuto
+curl http://localhost:8000/api/bands \
+  -H "Accept: application/json" -H "Authorization: Bearer TOKEN"
+```
+
+Tutti gli endpoint, con corpo delle richieste ed esempi di risposta, sono in [`docs/API.md`](docs/API.md).
 
 ## API, Postman e test
 
@@ -309,6 +397,8 @@ docker compose exec backend php artisan migrate:fresh --seed
 
 Attenzione: cancella tutti i dati.
 
+**Con due account in due schede, "Unisciti" risponde che sei già membro o non fa nulla.** Le schede della stessa finestra condividono l'accesso: l'ultimo login vale per tutte. Usa un account per finestra, ad esempio il secondo in una finestra in incognito (vedi [Prima di iniziare: due account insieme](#prima-di-iniziare-due-account-insieme)).
+
 **Errore 502 dopo aver ricostruito solo il backend.** Esegui `docker compose restart nginx`.
 
 **L'email di reset non arriva.** Le email non escono dal computer: si leggono in Mailpit su <http://localhost:8025>. La richiesta risponde sempre con successo, ma l'email parte solo se l'indirizzo è registrato. Il link vale 60 minuti e porta all'indirizzo di `FRONTEND_URL`.
@@ -355,4 +445,4 @@ Attenzione: cancella tutti i dati.
 
 ## Autore
 
-[NOME], progetto finale del corso Fullstack ITS FS25.
+Franzxg, progetto finale del corso Fullstack ITS FS25.
