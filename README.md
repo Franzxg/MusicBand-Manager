@@ -315,7 +315,7 @@ npm --prefix frontend run build
 
 **Limiti.** I modelli piccoli sbagliano facilmente i calcoli e i confronti su molti brani, per esempio nel sommare le durate. Per questo i dati calcolabili li calcola il backend: durata e progresso dei live nel contesto, durata reale della proposta. La durata della proposta può comunque scostarsi da quella chiesta, perché la scelta dei brani resta del modello.
 
-**Altri modelli provati.** Ho provato anche `llama3.1:8b` e `qwen3.5:4b`. Con entrambi lo schema JSON funzionava, ma sul mio PC con sola CPU erano più lenti e non ho potuto confrontare la qualità con rigore, quindi il predefinito resta il modello leggero.
+**Altri modelli provati.** Ho provato anche `llama3.1:8b` e `qwen3.5:4b`. Con entrambi lo schema JSON funzionava, ma erano più lenti quindi il predefinito resta il modello leggero.
 
 **Senza Ollama** (profilo non attivo, modello non ancora scaricato o nessuna risposta entro `OLLAMA_TIMEOUT` secondi) la chat risponde 503 "AI non disponibile" e il resto dell'app funziona. Il limite è di 10 richieste al minuto per utente; oltre si riceve 429 e il frontend mostra "Troppe richieste".
 
