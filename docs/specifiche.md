@@ -119,6 +119,7 @@ Nel form di aggiunta e modifica il link deve essere un URL http(s) valido. Se ti
 - ProgressBar (mostra la percentuale ricevuta dall'API)
 - ChatWindow (bolle utente/AI, input, invio)
 - Navbar con band corrente, link alla Guida, selettore lingua, interruttore tema chiaro/scuro e logout; il menu utente (da `md`) e l'intestazione del cassetto (su `xs`/`sm`) mostrano l'avatar con le iniziali accanto al nome
+- Footer in tutti i layout (pagine protette, autenticazione, Guida e 404): una riga centrata "© 2026 Music Band Manager · Franzxg" (anno e autore fissi, nome da `app.name`), testo `body2` in `text.secondary`, elemento `<footer>` (landmark `contentinfo`) senza link. Il layout è una colonna alta almeno `100dvh` con il `main` a `flex: 1`, così il footer resta in fondo anche con poco contenuto e segue il contenuto lungo senza essere fisso
 - UserAvatar: `Avatar` di MUI con le iniziali della prima e dell'ultima parola del nome (una sola lettera se il nome ha una parola, icona neutra se è vuoto); sfondo scelto in modo deterministico dal nome tra 8 colori ricavati dalla palette (`avatarColors` nel tema), con iniziali prugna e contrasto da 4.7:1 a 9.6:1 nei due temi; `aria-label` tradotto, oppure `aria-hidden` quando è decorativo accanto al nome
 
 ### Note tecniche

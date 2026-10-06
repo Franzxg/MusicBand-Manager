@@ -1,6 +1,7 @@
-import { Container } from '@mui/material'
-import { fadeIn } from '../theme/theme'
+import { Box, Container } from '@mui/material'
+import { fadeIn, pageFrame } from '../theme/theme'
 import useAuth from '../hooks/useAuth'
+import Footer from './Footer'
 import Navbar from './Navbar'
 import PublicHeader from './PublicHeader'
 
@@ -9,11 +10,12 @@ export default function PageShell({ children, maxWidth = 'md' }) {
   const { isAuthenticated } = useAuth()
 
   return (
-    <>
+    <Box sx={pageFrame}>
       {isAuthenticated ? <Navbar /> : <PublicHeader showLogin />}
-      <Container component="main" maxWidth={maxWidth} sx={{ py: { xs: 3, md: 5 }, ...fadeIn }}>
+      <Container component="main" maxWidth={maxWidth} sx={{ flex: 1, py: { xs: 3, md: 5 }, ...fadeIn }}>
         {children}
       </Container>
-    </>
+      <Footer />
+    </Box>
   )
 }

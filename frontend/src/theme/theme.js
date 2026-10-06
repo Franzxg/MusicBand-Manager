@@ -33,6 +33,9 @@ const smooth = (...props) => props.map((prop) => `${prop} 200ms ${ease}`).join('
 // Comparsa morbida dei contenuti (cambio di pagina o di tab): sx={fadeIn}
 export const fadeIn = { animation: `fadeIn 250ms ${ease} both` }
 
+// Contenitore dei layout: almeno alto quanto lo schermo, così il footer resta in fondo anche con poco contenuto
+export const pageFrame = { display: 'flex', flexDirection: 'column', minHeight: '100dvh' }
+
 export function createAppTheme(mode) {
   const dark = mode === 'dark'
 
